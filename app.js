@@ -1,10 +1,10 @@
 import express from'express';
 import { engine } from 'express-handlebars';
 import numeral from 'numeral';
-
+import test from "./models/testdb.js";
 
 const app = express()
-const port = 3000
+const port = 9000
 
 app.engine('hbs', engine({
     defaultLayout: 'main.hbs',
@@ -18,7 +18,9 @@ app.engine('hbs', engine({
 app.set('view engine', 'hbs');
 app.set('views', './views');
 
-app.get('/', function (req, res){
+app.get('/', async function (req, res) {
+    let a = await test();
+    console.log(a);
     res.render('test');
 });
 
