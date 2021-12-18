@@ -1,0 +1,111 @@
+{{#section 'js'}}
+    <script>
+        $('#activeBtn').on('click', (e) => {
+            $('#lockBtn').attr('class', 'btn');
+            $('#activeBtn').attr('class', 'btn btn-success');
+            alert("Active btn");
+        })
+
+        $('#lockBtn').on('click', (e) => {
+            $('#lockBtn').attr('class', 'btn btn-danger');
+            $('#activeBtn').attr('class', 'btn');
+            alert("lock btn");
+        })
+    </script>
+{{/section}}
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="row w-100">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-3">
+                            <a class="btn" href="/admin/ManageUser/Driver" role="button">
+                                <p><i class="fa fa-truck fa-3x" aria-hidden="true"></i></p>
+                                Driver
+                            </a>
+                        </div>
+
+                        <div class="col-3">
+                            <a class="btn" href="/admin/ManageUser/user" role="button">
+                                <p><i class="fa fa-user fa-3x" aria-hidden="true"></i></p>
+                                User
+                            </a>
+                        </div>
+
+                        <div class="col-3">
+                            <a class="btn btn-primary" href="/admin/ManageUser/partner" role="button">
+                                <p><i class="fa fa-building fa-3x" aria-hidden="true"></i></p>
+                                Partner
+                            </a>
+                        </div>
+
+                        <div class="col-3">
+                            <a class="btn" href="/admin/ManageUser/staff" role="button">
+                                <p><i class="fa fa-user-tie fa-3x" aria-hidden="true"></i></p>
+                                Staff
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="input-group mt-5">
+                        <input type="text" class="form-control" placeholder="search..." aria-label="Text input with segmented dropdown button">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-secondary">Serach</button>
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                                <span class="">Select</span>
+                            </button>
+
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div role="separator" class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Type Product</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">PN01</th>
+                        <td>FPT</td>
+                        <td>Hà Nội</td>
+                        <td>Software</td>
+                        <td>
+                            <div class="btn-group border" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-success" id="activeBtn">Active</button>
+                                <button type="button" class="btn" id="lockBtn">Lock</button>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+

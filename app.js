@@ -1,28 +1,36 @@
 import express from'express';
 import { engine } from 'express-handlebars';
 import numeral from 'numeral';
-import test from "./models/testdb.js";
+import guestRouter from "./routes/guest.router.js";
+import adminRouter from "./routes/admin.router.js";
+import driverRouter from "./routes/driver.router.js";
+import staffRouter from "./routes/staff.router.js";
+import hbs_sections from 'express-handlebars-sections';
+import morgan from 'morgan'
 
 const app = express()
-const port = 9000
+const port = 3000
+
+app.use(morgan('dev'));
 
 app.engine('hbs', engine({
     defaultLayout: 'main.hbs',
     helpers: {
         format_number(val) {
             return numeral(val).format('0, 0');
-        }
+        },
+        section: hbs_sections()
     }
 }));
 
 app.set('view engine', 'hbs');
 app.set('views', './views');
 
-app.get('/', async function (req, res) {
-    let a = await test();
-    console.log(a);
-    res.render('test');
-});
+app.use('/', guestRouter);
+app.use('/admin', adminRouter);
+app.use('/driver', driverRouter);
+app.use('/staff', staffRouter);
+
 
 app.listen(port, function ()  {
     console.log(`Example app listening at http://localhost:${port}`)
