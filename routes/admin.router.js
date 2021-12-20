@@ -12,15 +12,11 @@ router.get('/ManageUser/driver', async function (req, res) {
 });
 
 router.get('/', async function (req, res) {
-    res.redirect('/admin/ManageUser/driver', {
-        layout: 'admin.hbs'
-    });
+    res.redirect('/admin/ManageUser/driver');
 });
 
 router.get('/ManageUser', async function (req, res) {
-    res.redirect('/admin/ManageUser/driver', {
-        layout: 'admin.hbs'
-    });
+    res.redirect('/admin/ManageUser/driver');
 });
 
 //User

@@ -23,7 +23,7 @@
     <div class="container-fluid h-100 ">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-4">
-                <form>
+                <form method="post" action="register">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title text-center h2">Sign Up</p>
@@ -35,7 +35,7 @@
                                             <i class="fa fa-user" style="color:#3FC1C9" aria-hidden="true"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control border-left-0" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="text" class="form-control border-left-0" placeholder="Username" aria-label="Username" name="username">
                                 </div>
                             </div>
 
@@ -46,7 +46,7 @@
                                             <i class="fa fa-lock" style="color:#3FC1C9" aria-hidden="true"></i>
                                         </span>
                                     </div>
-                                    <input type="password" class="form-control border-left-0" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="password" class="form-control border-left-0" placeholder="Password" aria-label="Username" name="password">
                                 </div>
                             </div>
 
@@ -57,7 +57,7 @@
                                             <i class="fa fa-envelope" style="color:#3FC1C9" aria-hidden="true"></i>
                                         </span>
                                     </div>
-                                    <input type="email" class="form-control border-left-0" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="email" class="form-control border-left-0" placeholder="Email" aria-label="Username" name="email">
                                 </div>
                             </div>
 
@@ -68,7 +68,7 @@
                                             <i class="fa fa-phone-square" style="color:#3FC1C9" aria-hidden="true"></i>
                                         </span>
                                     </div>
-                                    <input type="number" class="form-control border-left-0" placeholder="Number Phone" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="number" class="form-control border-left-0" placeholder="Number Phone" aria-label="Username" name="phoneNumber">
                                 </div>
 
                             </div>
@@ -80,12 +80,12 @@
                                             <i class="fa fa-lock" style="color:#3FC1C9" aria-hidden="true"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control border-left-0" placeholder="Address" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="text" class="form-control border-left-0" placeholder="Address" aria-label="Username" name="address">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <select class="custom-select " id="inputGroupSelect01">
+                                <select class="custom-select " id="inputGroupSelect01" name="typeUser">
                                     <option selected>Type User</option>
                                     <option value="1">Khách hàng</option>
                                     <option value="2">Đối tác</option>
@@ -94,9 +94,12 @@
                             </div>
 
                             <div class="form-group mt-5">
-                                <a class="button is-rounded is-primary d-block" href="#" role="button">
+<!--                                <a class="button is-rounded is-primary d-block"  href="#" role="button">-->
+<!--                                    Next-->
+<!--                                </a>-->
+                                <button class="button is-rounded is-primary w-100" type="submit">
                                     Next
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>

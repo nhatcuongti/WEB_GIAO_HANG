@@ -5,6 +5,10 @@ export default{
         return sql.connect.request().query('select * from TKTAIXE');
     },
     async insertAccount(account){
-        return sql.connect.request().execute('');
+        try{
+            return sql.connect.request().query(`EXEC INSERT_ACCOUNT ${account.ID}, ${account.MK}`);
+        }catch(e){
+            return false;
+        }
     }
 }

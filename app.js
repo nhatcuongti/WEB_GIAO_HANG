@@ -6,15 +6,18 @@ import adminRouter from "./routes/admin.router.js";
 import driverRouter from "./routes/driver.router.js";
 import staffRouter from "./routes/staff.router.js";
 import hbs_sections from 'express-handlebars-sections';
-import morgan from 'morgan'
-
-const app = express()
-const port = 3000
-
-app.use(morgan('dev'));
-import test from "./models/testdb.js";
 import client from './routes/client.js'
 import company from './routes/company.js'
+import morgan from 'morgan'
+const app = express()
+
+const port = 3000
+
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use(morgan('dev'));
+
 
 app.engine('hbs', engine({
     defaultLayout: 'main.hbs',
