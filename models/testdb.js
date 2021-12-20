@@ -1,9 +1,8 @@
 import knex from "../utils/knex.js";
 import sql from "../utils/mssql.js";
 
-function test(){
-    return sql.connect.request().query('select st.* from student st')
-
+async function test(){
+    return sql.connect.request().query('select * from TKTAIXE');
 }
 
 export default test;

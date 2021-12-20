@@ -1,7 +1,6 @@
 import express from'express';
 import { engine } from 'express-handlebars';
 import numeral from 'numeral';
-<<<<<<< Updated upstream
 import guestRouter from "./routes/guest.router.js";
 import adminRouter from "./routes/admin.router.js";
 import driverRouter from "./routes/driver.router.js";
@@ -13,14 +12,9 @@ const app = express()
 const port = 3000
 
 app.use(morgan('dev'));
-=======
 import test from "./models/testdb.js";
 import client from './routes/client.js'
 import company from './routes/company.js'
-
-const app = express()
-const port = 3000
->>>>>>> Stashed changes
 
 app.engine('hbs', engine({
     defaultLayout: 'main.hbs',

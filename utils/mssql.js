@@ -2,14 +2,15 @@ import mssql from 'mssql/msnodesqlv8.js'
 
 const config = {
     user: 'sa',
-    password: '123',
+    password: '0909845284',
     server: 'localhost', // You can use 'localhost\\instance' to connect to named instance
-    database: 'StudentManagement',
+    database: 'Nhom18_DoAnThucHanh_19HTT2_1',
     driver: 'msnodesqlv8'
 }
 
 const connect = new mssql.ConnectionPool(config).connect(pool =>{ return pool})
-// file nay de test sd mssql de thuc hien excute proc
+// let connect = await mssql.connect(config);
+// file nay de test sd mssql de thuc hien execute proc
 
 export default {
     connect: connect,

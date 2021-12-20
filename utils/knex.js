@@ -4,8 +4,8 @@ export const connectionInfo = {
     host: '127.0.0.1',
     port: 1433,
     user: 'sa',
-    password: '123',
-    database: 'StudentManagement'
+    password: '0909845284',
+    database: 'Nhom18_DoAnThucHanh_19HTT2_1'
 };
 
 const knex = fn({

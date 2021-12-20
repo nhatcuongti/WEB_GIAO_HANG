@@ -1,8 +1,10 @@
 import express from 'express'
+import accountModel from "../models/account.model.js";
 
 const router = express();
 
 router.get('/', async function (req, res) {
+
     res.render('guest/login', {
         layout:false
     });
