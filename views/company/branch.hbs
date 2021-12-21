@@ -1,5 +1,15 @@
-
-
+{{#section 'js'}}
+    <script>
+        $('.delBranch').on('click', function (e){
+            const id = $(this).data('id');
+            $('#txtBraID').val(id);
+            $('#formDelBranch').submit();
+        });
+    </script>
+{{/section}}
+<form method="post" action="/company/branch/del" id="formDelBranch">
+    <input type="text" id="txtBraID" name="id" hidden>
+</form>
 <body>
     <div class="container">
         <div class="card">
@@ -13,24 +23,33 @@
                             <th scope="col">Tên địa chỉ</th>
                             <th scope="col">Doanh số</th>
                             <th scope="col">Hợp đồng</th>
-                            <th scope="col" class="text-right"><a href="../company/branch/add"><i class="fa fa-plus-square" aria-hidden="true">Add</i></a></th>
+                            <th scope="col" class="text-right"><a href="/company/branch/add"><i class="fa fa-plus-square" aria-hidden="true">Add</i></a></th>
                         </tr>
                     </thead>
                     <tbody>
-<!--                        <tr>-->
-<!--                            <th scope="row">DH1</th>-->
-<!--                            <td>2/2/2020</td>-->
-<!--                            <td>Tiền mặt</td>-->
-<!--                            <td>20.000</td>-->
-<!--                            <td>50.000</td>-->
-<!--                            <td>Đã giao</td>-->
-<!--                            <td>-->
-<!--                                <a class="btn btn-lg p-0  " href="#" role="button">-->
-<!--                                    <i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>-->
-<!--                                </a>-->
-<!--                            </td>-->
+                    {{#each this.data}}
+                        <tr>
+                            <th scope="row">{{MaChiNhanh}}</th>
+                            <td>{{DiaChi}}</td>
+                            <td>{{DoanhSoBan}}</td>
+                            {{#unless MAHOPDONG}}
+                            <td>Trống</td>
+                            {{else}}
+                                <td>MAHOPDONG</td>
+                                {{/unless}}
+                            <td class="text-right">
+                                <a data-id="{{MaChiNhanh}}" class="btn btn-lg p-0 delBranch" href="#" role="button">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                                <a class="btn btn-lg p-0  " href="/company/branch/update?id={{MaChiNhanh}}" role="button">
+                                    <i class="fa fa-wrench" aria-hidden="true"></i>
+                                </a>
+                            </td>
 
-<!--                        </tr>-->
+                        </tr>
+
+                    {{/each}}
+
 
                     </tbody>
                 </table>

@@ -11,14 +11,24 @@
                         <tr>
                             <th scope="col">Mã hợp đồng</th>
                             <th scope="col">Người đại diện</th>
-                            <th scope="col">Số chi nhánh đăng ký</th>
+                            <th scope="col">Số chi nhánh Đăng Ký</th>
                             <th scope="col">Ngày bắt đầu</th>
                             <th scope="col">Hiệu lực</th>
                             <th scope="col" class="text-right"><a href="../company/contract/add"><i class="fa fa-plus-square" aria-hidden="true">Add</i></a></th>
                         </tr>
                     </thead>
                     <tbody>
+                    {{#each this.data}}
+                        <tr>
+                            <th scope="row">{{MaHD}}</th>
+                            <td>{{NguoiDaiDien}}</td>
+                            <td>{{SoChiNhanhDK}}</td>
+                            <td>{{NgayBatDau}}</td>
+                            <td>{{HieuLuc}}</td>
 
+                        </tr>
+
+                    {{/each}}
                     </tbody>
                 </table>
             </div>

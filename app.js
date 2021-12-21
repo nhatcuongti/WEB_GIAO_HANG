@@ -22,7 +22,7 @@ app.use(morgan('dev'));
 
 
 app.engine('hbs', engine({
-    defaultLayout: 'main.hbs',
+    defaultLayout: 'company.hbs',
     helpers: {
         format_number(val) {
             return numeral(val).format('0, 0');
