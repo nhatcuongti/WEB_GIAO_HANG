@@ -2,7 +2,7 @@ import mssql from 'mssql/msnodesqlv8.js'
 
 const config = {
     user: 'sa',
-    password: '0909845284',
+    password: '123',
     server: 'localhost', // You can use 'localhost\\instance' to connect to named instance
     database: 'Nhom18_DoAnThucHanh_19HTT2_1',
     driver: 'msnodesqlv8',

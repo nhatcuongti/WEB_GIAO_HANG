@@ -1,19 +1,23 @@
 <div class="h3 text-center">Cập nhật thông tin chi nhánh</div>
 <div class="container-fluid d-flex justify-content-center">
+    {{#each data}}
 <div class="row">
-    <form>
-        <div class="mt-3">
+    <form method="post" action="/company/branch/update">
+        <div class="mt-4">
             <div className="form-group">
-                <input type="text" className="form-control" placeholder="Nhập địa chỉ mới của chi nhánh">
+                <input type="text" className="form-control" name="id" value="{{id}}" hidden>
+                <input type="text" className="form-control" name="address" placeholder="Nhập địa chỉ mới của chi nhánh">
             </div>
 
         </div>
-        <div class="mt-3">
+        <div class="mt-4">
             <a href="../branch"><button type="button" className="btn btn-primary">Back</button></a>
             <button type="submit" className="btn btn-primary">Submit</button>
         </div>
 
     </form>
+{{/each}}
+
 </div>
 </div>
 
