@@ -1,8 +1,10 @@
 import express from 'express'
 import accountModel from "../models/account.model.js";
+import formatData from '../utils/formatData.js'
+import {Login7TokenHandler} from "tedious/lib/token/handler.js";
 
 const router = express();
-let data;
+let generalData;
 
 router.get('/', async function (req, res) {
     res.render('guest/login', {
@@ -13,7 +15,7 @@ router.get('/', async function (req, res) {
 router.post('/', async function (req, res) {
     console.log('Before check account');
     const account = req.body;
-    var type =  accountModel.checkAccount(account);
+    var type =  await accountModel.checkAccount(account);
     console.log("After check account");
     console.log(typeof type);
     if (type === null) {
@@ -47,7 +49,7 @@ router.get('/register', async function (req, res) {
 
 router.post('/register', async function (req, res) {
     const generalInfor = req.body;
-    data = generalInfor;
+    generalData = generalInfor;
     var type = +req.body.typeUser;
     if (type === 1)
         res.redirect("/register/client");
@@ -64,39 +66,65 @@ router.get('/register/client', async function (req, res) {
 });
 
 router.post('/register/client', async function (req, res) {
-    console.log(data);
-    console.log(req.body);
-    res.render('guest/register_client', {
-        layout:false
-    });
+    const check = await accountModel.insertAccountClient(generalData, req.body);
+    if (!check)
+        res.render('guest/register_client', {
+            layout:false
+        });
+    else{
+        req.session.typeAccount = 'client';
+        req.session.authUser = req.body.username;
+        req.session.auth = true;
+        res.redirect('/client')
+    }
 });
 
 router.get('/register/driver', async function (req, res) {
+    const rawData = await accountModel.getActivePlace();
+    const activePlaces = rawData.recordset;
     res.render('guest/register_driver', {
-        layout:false
+        layout:false,
+        activePlaces
     });
 });
 
 router.post('/register/driver', async function (req, res) {
-    console.log(data);
-    console.log(req.body);
-    res.render('guest/register_driver', {
-        layout:false
-    });
+    const check = await accountModel.insertAccountDriver(generalData, req.body);
+    if (!check)
+        res.render('guest/register_driver', {
+            layout:false
+        });
+    else{
+        req.session.typeAccount = 'driver';
+        req.session.authUser = req.body.username;
+        req.session.auth = true;
+        res.redirect('/driver/profile');
+    }
 });
 
 router.get('/register/partner', async function (req, res) {
+    const rawData = await accountModel.getTypeProduct();
+    const typeProduct = rawData.recordset;
+    console.log(typeProduct);
     res.render('guest/register_partner', {
-        layout:false
+        layout:false,
+        typeProduct
     });
 });
 
 router.post('/register/partner', async function (req, res) {
-    console.log(data);
-    console.log(req.body);
-    res.render('guest/register_partner', {
-        layout:false
-    });
+    const check = await accountModel.insertAccountPartner(generalData, req.body);
+
+    if (!check)
+        res.render('guest/register_partner', {
+            layout:false
+        });
+    else{
+        req.session.typeAccount = 'driver';
+        req.session.authUser = req.body.username;
+        req.session.auth = true;
+        res.redirect('/company/product');
+    }
 });
 
 
