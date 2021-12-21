@@ -42,21 +42,65 @@ export default{
             console.log(e)
             return false;
         }
-        },
-    async insertContract(contract){
+    },
+    async insertContract(idContract, idCompany,ngdaidien, sochinhanhdk, date, time){
         try{
-            return sql.connect.request().input('idBranch', sql.mssql.VarChar(5), branch.name).
-            input('idCompany', sql.mssql.VarChar, "dn01").
-            input('addressBranch',sql.mssql.VarChar, branch.address).
-            input('ds', sql.mssql.Money, 0).
-            input('idContract', sql.mssql.VarChar, null).
-            query('EXEC INSERT_CHINHANH @idBranch, @idCompany, @addressBranch, @ds, @idContract');
+            return sql.connect.request().input('idContract', sql.mssql.VarChar(5), idContract).
+            input('idCompany', sql.mssql.VarChar, idCompany).
+            input('ngdaidien',sql.mssql.VarChar, ngdaidien).
+            input('sochinhanhdk', sql.mssql.Int, sochinhanhdk).
+            input('date', sql.mssql.DateTime, date).
+            input('time', sql.mssql.Int, time).
+            query('EXEC INSERT_HopDong @idContract, @ngdaidien, @sochinhanhdk, @time, 0.1,@date, @idCompany ');
         }catch(e){
             console.log(e)
             return false;
         }
     },
-    // increaContractID(arr){
-    //     var str = 'HD'
-    // }
+    async getContract(idCompany){
+        return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
+        query('select cn.* from HopDong cn where cn.MaDoanhNghiep = @idCompany');
+    },
+    async updateBranch_Contract(idBranch, idCompany, idContract){
+        try{
+            idBranch.forEach(function (e){
+                sql.connect.request().input('idBranch', sql.mssql.VarChar(5), e).
+                input('idCompany', sql.mssql.VarChar, idCompany).
+                input('idContract',sql.mssql.VarChar, idContract).
+                query('UPDATE ChiNhanh Set MaHopDong=@idContract where MaChiNhanh = @idBranch and MaDoanhNghiep = @idCompany');
+            })
+        }catch(e){
+            console.log(e)
+            return false;
+        }
+    },
+    increaBranchID(arr){
+        if(Object.keys(arr).length === 0 || arr === null)
+            return '0'
+
+        for(var i = 0; i < 100; i++){
+            var check = 0;
+            arr.forEach(function (e){
+                if(e.MaChiNhanh === (i.toString()))
+                    check = 1;
+            })
+            if(check === 0)
+                return i.toString()
+        }
+    },
+    increaContractID(arr){
+        if(Object.keys(arr).length === 0 || arr === null)
+            return '0'
+
+        for(var i = 0; i < 100; i++){
+            var check = 0;
+            arr.forEach(function (e){
+                if(e.MaHD === (i.toString()))
+                    check = 1;
+            })
+            if(check === 0)
+                return i.toString()
+        }
+    }
+
 }

@@ -2,14 +2,13 @@
     <script>
         $('.delBranch').on('click', function (e){
             const id = $(this).data('id');
-            alert(id)
             $('#txtBraID').val(id);
             $('#formDelBranch').submit();
         });
     </script>
 {{/section}}
 <form method="post" action="/company/branch/del" id="formDelBranch">
-    <input type="text" id="txtBraID" name="id">
+    <input type="text" id="txtBraID" name="id" hidden>
 </form>
 <body>
     <div class="container">

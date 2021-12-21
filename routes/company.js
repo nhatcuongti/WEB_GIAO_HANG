@@ -24,6 +24,9 @@ router.get('/branch/add' ,async function (req, res) {
 });
 
 router.post('/branch/add' ,async function (req, res) {
+    var temp = await companyModel.getBranch('dn01')
+    var id = companyModel.increaBranchID(temp.recordset)
+    req.body.name = id;
     const check = await companyModel.insertBranch(req.body);
     res.redirect('/company/branch');
 });
@@ -52,21 +55,27 @@ router.get('/order/detail' ,async function (req, res) {
     res.render('company/orderDetail');
 });
 router.get('/contract' ,async function (req, res) {
-    res.render('company/contract');
+    var temp = await companyModel.getContract('dn01')
+    res.render('company/contract',{
+        data: temp.recordset
+    });
 });
 
 router.get('/contract/add' ,async function (req, res) {
     const br =    await companyModel.getBranchNullConstract('dn01')
-    console.log(br.recordset)
+    // console.log(br.recordset)
     res.render('company/addContract',{
         data: br.recordset
     });
 });
 router.post('/contract/add' ,async function (req, res) {
-    console.log(req.body)
-    // res.render('company/addContract',{
-    //     data: br.recordset
-    // });
+    var temp = await companyModel.getContract('dn01')
+    var id = companyModel.increaContractID(temp.recordset)
+    await companyModel.insertContract(id,'dn01',req.body.daidien,
+        Object.keys(req.body.selection).length,req.body.date,req.body.time)
+    console.log(req.body.selection)
+    await companyModel.updateBranch_Contract(req.body.selection,'dn01',id)
+    res.redirect('/company/contract')
 });
 
 export default router;
