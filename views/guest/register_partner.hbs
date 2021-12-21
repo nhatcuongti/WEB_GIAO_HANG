@@ -23,21 +23,21 @@
     <div class="container-fluid h-100 ">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-4">
-                <form>
+                <form method="post" action="/register/partner">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title text-center h2">Sign Up</p>
 
                             <div class="form-group">
-                                <input type="text" class="form-control " placeholder="Company Name" aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control " placeholder="Company Name" name="companyName" >
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Name Representative" aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" placeholder="Name Representative" name="representative">
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Tax Code" aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" placeholder="Tax Code" name="taxCode">
                             </div>
 
 
@@ -58,9 +58,9 @@
                             </div>
 
                             <div class="form-group pt-5">
-                                <a class="button is-rounded is-primary d-block" href="#" role="button">
+                                <button class="button is-rounded is-primary w-100" type="submit">
                                     Register
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>

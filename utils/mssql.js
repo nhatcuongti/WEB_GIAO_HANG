@@ -5,7 +5,10 @@ const config = {
     password: '0909845284',
     server: 'localhost', // You can use 'localhost\\instance' to connect to named instance
     database: 'Nhom18_DoAnThucHanh_19HTT2_1',
-    driver: 'msnodesqlv8'
+    driver: 'msnodesqlv8',
+    options: {
+        trustedConnection: true
+    }
 }
 
 const connect = new mssql.ConnectionPool(config).connect(pool =>{ return pool})

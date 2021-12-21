@@ -31,38 +31,11 @@
             </a>
         </div>
         <div class="navbar-menu align-items-center">
-            <h1 class="h2">Online Delivery</h1>
-            <form class="navbar-item ml-auto">
-                <div class="control has-icons-left">
-                    <input class="input" type="text" placeholder="Nhập từ khóa tìm kiếm">
-                    <span class="icon is-left is-small">
-                            <i class="fa fa-search"></i>
-                        </span>
-                </div>
-                <div class="select">
-                    <select>
-                        <option value="name">Theo tên</option>
-                        <option value="category">Theo danh mục</option>
-                    </select>
-                </div>
-                <div>&nbsp&nbsp&nbsp&nbsp</div>
-                <button class="button is-success" type="submit">
-                    <span>Tìm kiếm</span>
-                    <span class="icon is-small">
-                            <i class="fa fa-search"></i>
-                        </span>
-                </button>
-            </form>
+            <h1 class="h2">Admin Chanel</h1>
+
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-primary" href="/">
-                            <strong>Đăng nhập</strong>
-                        </a>
-                        <a class="button is-light" href="/register">
-                            Đăng ký
-                        </a>
-                    </div>
+                    <p class="h3">Hello, {{authUser}}</p>
                 </div>
             </div>
         </div>

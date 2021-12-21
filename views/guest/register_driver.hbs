@@ -23,27 +23,27 @@
     <div class="container-fluid h-100 ">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-4">
-                <form>
+                <form method="post" action="/register/driver">
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title text-center h2">Sign Up</p>
 
                             <div class="form-group">
-                                <input type="text" class="form-control " placeholder="Banking Account" aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control " placeholder="Banking Account" name="bankingAccount">
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-6">
-                                    <input type="text" class="form-control" placeholder="First Name" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="text" class="form-control" placeholder="First Name" name="firstName">
                                 </div>
 
                                 <div class="col-6">
-                                    <input type="text" class="form-control" placeholder="Last Name" aria-label="Username" aria-describedby="basic-addon1">
+                                    <input type="text" class="form-control" placeholder="Last Name" name="lastName">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="License Plates" aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" placeholder="License Plates" name="licensePlates">
                             </div>
 
 
@@ -64,9 +64,9 @@
                             </div>
 
                             <div class="form-group pt-5">
-                                <a class="button is-rounded is-primary d-block" href="#" role="button">
+                                <button class="button is-rounded is-primary w-100" type="submit">
                                     Register
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>

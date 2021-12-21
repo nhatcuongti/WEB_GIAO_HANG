@@ -8,7 +8,9 @@ import staffRouter from "./routes/staff.router.js";
 import hbs_sections from 'express-handlebars-sections';
 import client from './routes/client.js'
 import company from './routes/company.js'
+import sessionMdw from "./middlewares/session.mdw.js";
 import morgan from 'morgan'
+import localsMdw from "./middlewares/locals.mdw.js";
 const app = express()
 
 const port = 3000
@@ -32,6 +34,8 @@ app.engine('hbs', engine({
 app.set('view engine', 'hbs');
 app.set('views', './views');
 
+sessionMdw(app);
+localsMdw(app);
 app.use('/', guestRouter);
 app.use('/admin', adminRouter);
 app.use('/driver', driverRouter);
