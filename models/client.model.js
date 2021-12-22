@@ -6,7 +6,7 @@ export default{
         return sql.connect.request().query('select * from KHACHHANG');
     },
     async getCompany(){
-        //return sql.connect.request()
+        //return sql.connect.request().query('SELECT MASOTHUE AS id, TenDoanhNghiep AS Name, LoaiHang AS typeProduct FROM DoanhNghiep')
         const companyList = [
             {
                 id : '1',
@@ -37,6 +37,9 @@ export default{
         return companyList;
     },
     async getProductOfCompany(idCompany){
+        //return sql.connect.request()
+        //.input('MADOANHNGHIEP', sql.mssql.NVarChar, idCompany)
+        //.query('exec viewProductOfCompany @MADOANHNGHIEP')
         const products = [
             {
                 idProduct : '1',

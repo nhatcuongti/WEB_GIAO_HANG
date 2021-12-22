@@ -89,7 +89,6 @@ router.post('/list', async (req, res) => {
 
 router.get('/my-order' ,async function (req, res) {
     const orderData = await orderModel.getAllOrder('1');
-
     res.render('client/client_myOrder', {
         layout: 'client.hbs',
         orderData

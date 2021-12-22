@@ -10,7 +10,7 @@
                         <th scope="col">Ngày mua</th>
                         <th scope="col">Hình thức thanh toán</th>
                         <th scope="col">Phí vận chuyển</th>
-                        <th scope="col">Tổng tiền</th>
+                        <th scope="col">Phí sản phẩm</th>
                         <th scope="col">Trạng Thái</th>
                         <th scope="col">Chi tiết</th>
                     </tr>
@@ -21,8 +21,8 @@
                             <th scope="row">{{id}}</th>
                             <td>{{purchaseDate}}</td>
                             <td>{{typePurchase}}</td>
-                            <td>{{format_number shipPice}}</td>
-                            <td>{{format_number totalPrice}}</td>
+                            <td>{{format_number shipPrice}}</td>
+                            <td>{{format_number productPrice}}</td>
                             <td>{{status}}</td>
                             <td>
                                 <a class="btn btn-lg p-0  " href="/client/my-order/detail" role="button">

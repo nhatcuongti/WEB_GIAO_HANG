@@ -19,18 +19,24 @@ export default{
         return null;
     },
     async getAllOrder(idUser){
+        //return sql.connect.request()
+        //.input('idUser', sql.mssql.NVarChar, idUser)
+        //.query('exec viewOrderWithIDUser @idUser')
         return [
             {
                 id: '1',
                 purchaseDate: '27/05/2020',
                 typePurchase: 'Tiền Mặt',
-                shipPice: '20000',
-                totalPrice: '50000',
+                shipPrice: '20000',
+                productPrice: '50000',
                 status: 'Đã giao',
             }
         ]
     },
     async getOrderDetail(idOrder){
+        //return sql.connect.request()
+        //.input('idOrder', sql.mssql.NVarChar, idOrder)
+        //.query('exec viewDetailOrder @idOrder')
         return {
             taxCode : '12312',
             companyName : 'FPT',
@@ -44,6 +50,9 @@ export default{
         }
     },
     async getProductWithOrder(idOrder){
+        //return sql.connect.request()
+        //.input('idOrder', sql.mssql.NVarChar, idOrder)
+        //.query('exec viewProductWithOrderID @idOrder')
         return [
             {
                 idProduct : '1',
