@@ -150,5 +150,12 @@ export default{
         }catch(e){
             return false;
         }
+    },
+    async getAccountClientWithID(id){
+        return {
+            id : '1',
+            name : 'Bùi Nguyễn Nhật Hào',
+            address : 'Bình Phước, Lộc Ninh'
+        }
     }
 }

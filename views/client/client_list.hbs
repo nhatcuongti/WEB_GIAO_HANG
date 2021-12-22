@@ -1,17 +1,18 @@
-
-    <div class="container-fluid">
-        <p class="text-center h2 mt-5 border-bottom">Thanh Toán</p>
-        <form>
+<div class="container-fluid">
+    <p class="text-center h2 mt-5 border-bottom">Thanh Toán</p>
+    {{#if this.cart}}
+        <form method="post" action="/client/list">
             <div class="container">
                 <div class="row" style="background-color: #C4C4C4;">
+                    <input value="{{this.myAccount.id}}" name="idUser" hidden>
                     <div class="col-12 mt-5">
                         <span class="h5">Họ tên: </span>
-                        <span>Bùi Nguyễn Nhật Hào</span>
+                        <span>{{this.myAccount.name}}</span>
                     </div>
 
                     <div class="col-12 mt-5">
                         <span class="h5">Địa chỉ giao hàng</span>
-                        <span>Nguyễn Văn Cừ, Quận 5</span>
+                        <span>{{this.myAccount.address}}</span>
                     </div>
 
 
@@ -19,11 +20,11 @@
                     <div class="col-12 my-5 ">
                         <span class="h5">Hình thức thanh toán :</span>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                            <input class="form-check-input" type="radio" name="typePurchase" id="inlineRadio1" value="0">
                             <label class="form-check-label" for="inlineRadio1">Tiền mặt</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                            <input class="form-check-input" type="radio" name="typePurchase" id="inlineRadio2" value="1">
                             <label class="form-check-label" for="inlineRadio2">Chuyển Khoản</label>
                         </div>
                     </div>
@@ -36,51 +37,59 @@
 
                     <table class="table table-dark border">
                         <thead>
-                            <tr>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Số lượng sản phẩm</th>
-                                <th scope="col">Giá</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Số lượng sản phẩm</th>
+                        </tr>
                         </thead>
                         <tbody>
+                        {{#each this.cart}}
                             <tr>
-                                <th scope="row">Cơm gà xối mỡ</th>
-                                <td>3</td>
-                                <td>5000</td>
+                                <th scope="row">{{name}}</th>
+                                <td>{{format_number price}}</td>
+                                <td>{{numberProduct}}</td>
                             </tr>
-
+                        {{/each}}
                         </tbody>
                     </table>
                 </div>
 
 
+
                 <div class="row justify-content-end">
-                    <div class="btn-group border" role="group" aria-label="Basic example">
+                    <div class="btn-group" role="group" aria-label="Basic example">
                         <button type="button" class="btn btn-success">
-                            Phí vận chuyển : <span>2000</span>
+                            <span>Phí vận Chuyển : 20,000</span>
                         </button>
                         <button type="button" class="btn btn-primary">
-                            Tổng tiền : <span>17000</span>
+                            <span>Tổng Tiền : {{format_number this.totalPriceProduct}} </span>
                         </button>
                     </div>
                 </div>
+                <input value="20000" name="shipPrice" hidden>
+                <input value="{{this.totalPriceProduct}}" name="totalPrice" hidden>
 
                 <div class="row justify-content-end mt-5">
-                    <a href="../client">
+                    <a href="/client">
                         <button type="button" class="btn btn-danger mr-5">
                             <i class="fa fa-backward" aria-hidden="true"></i>
                             Back
                         </button>
                     </a>
 
-                    <a href="../client/my-order">
-                        <button type="button" class="btn btn-primary ml-5">
-                            <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
-                            Sell
-                        </button>
-                    </a>
+                    <button type="submit" class="btn btn-primary ml-5">
+                        <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+                        purchase
+                    </button>
 
                 </div>
             </div>
         </form>
-    </div>
+    {{else}}
+        <p class="h1 text-danger">
+            Bạn chưa thêm sản phẩm nào vào giỏ hàng
+        </p>
+    {{/if}}
+
+</div>

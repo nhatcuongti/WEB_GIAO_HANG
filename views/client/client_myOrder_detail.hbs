@@ -1,0 +1,99 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="row w-100 justify-content-between">
+                <p class="h3">Chi tiết đơn hàng</p>
+                <a class="btn btn-outline-primary" href="/client/my-order" role="button">
+                    <i class="fa fa-backward" aria-hidden="true"></i> Back
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="container-fluid">
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-3 card">
+                                <p>
+                                    <span class="h6">Mã số thuế :</span>
+                                    <span>{{this.orderDetailData.taxCode}}</span>
+                                </p>
+                            </div>
+
+                            <div class="col-3 card">
+                                <p>Tên Doanh Nghiệp: <span>{{this.orderDetailData.companyName}}</span></p>
+                            </div>
+
+                            <div class="col-3 card">
+                                <p>SĐT: <span>{{this.orderDetailData.phoneNumberCompany}}</span></p>
+                            </div>
+                            <div class="col-3 card">
+                                <p>Email: <span>{{this.orderDetailData.email}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 card">
+                                <p>Địa chỉ doanh nghiệp : <span>{{this.orderDetailData.companyAddress}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 card">
+                                <p>Địa chỉ Chi Nhánh: <span>{{this.orderDetailData.branchAddress}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-4 card">
+                                <p>Tên Tài Xế : <span>{{this.orderDetailData.driverName}}</span></p>
+                            </div>
+
+                            <div class="col-4 card">
+                                <p>SĐT: <span>{{this.orderDetailData.phoneNumberDriver}}</span></p>
+                            </div>
+
+                            <div class="col-4 card">
+                                <p>Biển Số Xe: <span>{{this.orderDetailData.licensePlates}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <table class="table table-dark border">
+                <thead>
+                    <tr>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Số lượng sản phẩm</th>
+                        <th scope="col">Giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.listProducts}}
+                        <tr>
+                            <th scope="row">{{name}}</th>
+                            <td>{{number}}</td>
+                            <td>{{format_number price}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+            <div class="row justify-content-end">
+                <p style="background-color: #FF6B55;" class="border p-4">
+                    <span class="h6">Tổng tiền :</span>
+                    <span>{{format_number this.totalPriceProduct}}</span>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+

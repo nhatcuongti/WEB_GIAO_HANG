@@ -12,6 +12,10 @@ export default function (app) {
       req.session.auth = false;
     }
 
+    if (typeof (req.session.cart) === 'undefined'){
+      req.session.cart = [];
+    }
+
     res.locals.auth = req.session.auth;
     res.locals.authUser = req.session.authUser;
     next();

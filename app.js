@@ -6,7 +6,7 @@ import adminRouter from "./routes/admin.router.js";
 import driverRouter from "./routes/driver.router.js";
 import staffRouter from "./routes/staff.router.js";
 import hbs_sections from 'express-handlebars-sections';
-import client from './routes/client.js'
+import client from './routes/client.router.js'
 import company from './routes/company.js'
 import sessionMdw from "./middlewares/session.mdw.js";
 import morgan from 'morgan'

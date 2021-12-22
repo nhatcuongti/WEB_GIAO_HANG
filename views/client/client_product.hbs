@@ -1,0 +1,72 @@
+{{#section 'js'}}
+    <script>
+        $('.insertProduct').on('click', function() {
+            const data = $(this).data("id");
+            const numberProduct = $(`#${data}`).text();
+
+            $('#inputID').val(data);
+            $('#numberProduct').val(numberProduct);
+
+            $('form').submit();
+        })
+
+        $('.minusBtn').on('click', function (){
+            const idProduct = $(this).data("id");
+            const data = +$(`#${idProduct}`).text();
+            $(`#${idProduct}`).text(data - 1)
+        })
+
+        $('.plusBtn').on('click', function (){
+            const idProduct = $(this).data("id");
+            const data = +$(`#${idProduct}`).text();
+            $(`#${idProduct}`).text(data + 1)
+        })
+    </script>
+
+{{/section}}
+
+<div class="container-fluid">
+
+    <p class="text-center h2 mt-5">Danh sách sản phẩm</p>
+    <p></p>
+
+    <form method="post" action="/client/product">
+        <input type="text" id="inputID" name="idProduct" hidden>
+        <input type="text" id="numberProduct" name="numberProduct" hidden>
+    </form>
+    <div class="row">
+        {{#each this.products}}
+            <div class="col-4">
+                <a>
+                    <div class="card">
+                        <img src="https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product.png" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title h4">{{name}}</h5>
+                            <p class="card-text text-danger h4">{{format_number price}} VND</p>
+                        </div>
+                        <div class="card-footer justify-content-between">
+                            <button class="btn btn-primary insertProduct" data-id="{{idProduct}}">
+                                <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                Thêm vào giỏ hàng
+                            </button>
+
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-secondary minusBtn" data-id="{{idProduct}}">
+                                    <i class="fa fa-minus-square" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="{{idProduct}}" disabled>
+                                    1
+                                </button>
+                                <button type="button" class="btn btn-secondary plusBtn" data-id="{{idProduct}}">
+                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {{/each}}
+    </div>
+</div>
+
