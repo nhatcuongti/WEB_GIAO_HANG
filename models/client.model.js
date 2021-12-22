@@ -36,7 +36,7 @@ export default{
         ]
         return companyList;
     },
-    async getProductOfCompany(idCompany){
+    async getProductOfCompany(idCompany, idBranch){
         //return sql.connect.request()
         //.input('MADOANHNGHIEP', sql.mssql.NVarChar, idCompany)
         //.query('exec viewProductOfCompany @MADOANHNGHIEP')

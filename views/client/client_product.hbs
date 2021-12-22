@@ -33,6 +33,8 @@
     <form method="post" action="/client/product">
         <input type="text" id="inputID" name="idProduct" hidden>
         <input type="text" id="numberProduct" name="numberProduct" hidden>
+        <input type="text" id="idBranch" name="idBranch" value="{{idBranch}}" hidden>
+        <input type="text" id="idCompany" name="idCompany" value="{{idCompany}}" hidden>
     </form>
     <div class="row">
         {{#each this.products}}

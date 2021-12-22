@@ -3,6 +3,7 @@ import clientModel from "../models/client.model.js";
 import accountModel from "../models/account.model.js";
 import productModel from "../models/product.model.js";
 import orderModel from "../models/order.model.js";
+import companyModel from "../models/company.model.js";
 const router = express.Router();
 
 
@@ -14,12 +15,41 @@ router.get('/' ,async function (req, res) {
     });
 });
 
-router.get('/product/:id' ,async function (req, res) {
-    const idProduct = req.params.id;
-    const products = await clientModel.getProductOfCompany(idProduct);
+router.get('/branch/:id' ,async function (req, res) {
+    const idCompany = req.params.id;
+    // const branchList = companyModel.getBranch(idCompany);
+    const branchList = [
+        {
+            MaChiNhanh : '1',
+            MaDoanhNghiep : idCompany,
+            DiaChi : 'Thành Phố Hồ Chí Minh, Quận 10'
+        },
+        {
+            MaChiNhanh : '2',
+            MaDoanhNghiep : idCompany,
+            DiaChi : 'Bình Phước'
+        },
+        {
+            MaChiNhanh : '1',
+            MaDoanhNghiep : idCompany,
+            DiaChi : 'Hà Nội'
+        }
+    ]
+    res.render('client/client_home_branch', {
+        layout:'client.hbs',
+        branchList
+    });
+});
+
+router.get('/product/:idCompany/:idBranch' ,async function (req, res) {
+    const idCompany = req.params.idCompany;
+    const idBranch = req.params.idBranch;
+    const products = await clientModel.getProductOfCompany(idCompany, idBranch);
     res.render('client/client_product', {
         layout: 'client.hbs',
-        products
+        products,
+        idCompany,
+        idBranch
     });
 });
 
@@ -68,8 +98,6 @@ router.get('/list' ,async function (req, res) {
         totalPriceProduct += product.price * product.numberProduct;
     }
 
-    console.log(cart);
-    console.log(myAccount);
 
     res.render('client/client_list', {
         layout: 'client.hbs',
@@ -84,6 +112,7 @@ router.post('/list', async (req, res) => {
     console.log(req.body);
     console.log(req.session.cart);
     //Insert database
+
     res.redirect('/client');
 })
 
