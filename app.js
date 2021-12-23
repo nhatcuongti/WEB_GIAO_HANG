@@ -5,9 +5,9 @@ import guestRouter from "./routes/guest.router.js";
 import adminRouter from "./routes/admin.router.js";
 import driverRouter from "./routes/driver.router.js";
 import staffRouter from "./routes/staff.router.js";
-import hbs_sections from 'express-handlebars-sections';
 import client from './routes/client.router.js'
 import company from './routes/company.js'
+import hbs_sections from 'express-handlebars-sections';
 import sessionMdw from "./middlewares/session.mdw.js";
 import morgan from 'morgan'
 import localsMdw from "./middlewares/locals.mdw.js";
@@ -25,7 +25,11 @@ app.engine('hbs', engine({
     defaultLayout: 'company.hbs',
     helpers: {
         format_number(val) {
+
             return numeral(val).format('0, 0');
+        },
+        format_date(val){
+          return val.toLocaleString('en-gb');
         },
         section: hbs_sections()
     }
@@ -40,9 +44,6 @@ app.use('/', guestRouter);
 app.use('/admin', adminRouter);
 app.use('/driver', driverRouter);
 app.use('/staff', staffRouter);
-
-
-
 app.use('/client', client);
 app.use('/company', company);
 

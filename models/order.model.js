@@ -57,7 +57,7 @@ export default{
 
         return null;
     },
-    async getAllOrder(idUser){
+    async getAllOrderFormat(idUser){
         console.log(idUser);
         const rawData =  await sql.connect.request()
         .input('idUser', sql.mssql.VarChar, idUser)

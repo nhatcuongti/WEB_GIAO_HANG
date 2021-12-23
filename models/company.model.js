@@ -61,6 +61,66 @@ export default{
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
         query('select cn.* from HopDong cn where cn.MaDoanhNghiep = @idCompany');
     },
+    async getBranchWithIDContract(idContract){
+        const branchList = [
+            {
+                MaChiNhanh : '1',
+                DiaChi : 'Bình Phước, Lộc Ninh'
+            },
+            {
+                MaChiNhanh : '2',
+                DiaChi : 'Quảng Nam'
+            },
+            {
+                MaChiNhanh : '3',
+                DiaChi : 'Quảng Trị'
+            },
+            {
+                MaChiNhanh : '4',
+                DiaChi : 'Thành Phố Hồ Chí Minh'
+            },
+            {
+                MaChiNhanh : '5',
+                DiaChi : 'Huế'
+            }
+        ];
+        return branchList;
+    },
+    async getAllContract(){
+        const contractData = [
+            {
+                MaHD : '1',
+                TenDoanhNghiep : 'FPT',
+                NgayBatDau: new Date(2021, 10, 27),
+                HieuLuc : 6,
+            },
+            {
+                MaHD : '2',
+                TenDoanhNghiep : 'Apple',
+                NgayBatDau: new Date(2021, 8, 27),
+                HieuLuc : 3,
+                DangGiaHan : true
+            },
+            {
+                MaHD : '3',
+                TenDoanhNghiep : 'Microsoft',
+                NgayBatDau: new Date(2021, 5, 27),
+                HieuLuc : 3,
+            }
+        ];
+        return contractData;
+    },
+    async getContractWithID(idContract){
+        const contractData = {
+            MaHD : '1',
+            TenDoanhNghiep : 'FPT',
+            NguoiDaiDien : 'Nguyễn Văn A',
+            NgayBatDau: '27/05/2021',
+            HieuLuc : 3,
+            SoChiNhanhDK : 3
+        };
+        return contractData
+    },
     async updateBranch_Contract(idBranch, idCompany, idContract){
         try{
             idBranch.forEach(function (e){
@@ -101,6 +161,12 @@ export default{
             if(check === 0)
                 return i.toString()
         }
-    }
+    },
 
+    async updateDangGiaHanContract(idContract) {
+        // sql.connect.request()
+        //     .input('idContract', sql.mssql.varchar(10), idContract)
+        //     .input('DangGiaHan', sql.mssql.BIT, false)
+        //     .query('UPDATE HopDong Set DangGiaHan=@DangGiaHan where MaHD = @idContract');
+    }
 }

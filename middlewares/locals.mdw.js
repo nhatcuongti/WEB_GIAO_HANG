@@ -1,8 +1,10 @@
 export default function (app) {
   app.use(async function (req, res, next) {
     res.locals.isManageUser = false;
-    res.locals.isManageReport = false;
-    res.locals.isManageUpdate = false;
+    res.locals.isManageTypeProduct = false;
+    res.locals.isManagePlaces = false;
+
+    res.locals.StaffProfile = false;
     next();
   });
 

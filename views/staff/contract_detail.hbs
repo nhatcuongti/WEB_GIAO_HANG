@@ -1,7 +1,18 @@
+{{#section 'js'}}
+    <script>
+        $('#pendingBtn').on('click', function(e) {
+            const idContract = $(this).data('id');
+            $('form > input').val(idContract)
+            $('form').submit();
+        })
+    </script>
+{{/section}}
+
+
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <p class="h2">Driver Profile</p>
+            <p class="h2">Thông tin hợp đồng</p>
         </div>
 
         <div class="card-body">
@@ -10,60 +21,55 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Hạng m</th>
-                                <th scope="col">Nội dung</th>
-                                <th scope="col">Chỉnh sửa</th>
+                                <th scope="col" class="h3 px-0">Hạng mục</th>
+                                <th scope="col" class="h3 px-0">Nội dung</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <th scope="row">Mã Hợp Đồng</th>
-                                <td>HD01</td>
-                                <td>
-                                    <a class="button is-rounded is-success" href="#" role="button">
-                                        Chỉnh sửa
-                                    </a>
-                                </td>
+                                <td>{{this.contractData.MaHD}}</td>
                             </tr>
 
                             <tr>
                                 <th scope="row">Tên đối tác</th>
-                                <td>HappyDragon</td>
-                                <td>
-                                    <a class="button is-rounded is-success" href="#" role="button">
-                                        Chỉnh sửa
-                                    </a>
-                                </td>
+                                <td>{{this.contractData.TenDoanhNghiep}}</td>
                             </tr>
 
                             <tr>
-                                <th scope="row">Mã chi nhánh</th>
-                                <td>CN02</td>
-                                <td>
-                                    <a class="button is-rounded is-success" href="#" role="button">
-                                        Chỉnh sửa
-                                    </a>
-                                </td>
+                                <th scope="row">Người đại diện</th>
+                                <td>{{this.contractData.NguoiDaiDien}}</td>
                             </tr>
+
 
                             <tr>
                                 <th scope="row">Ngày đăng ký</th>
-                                <td>2/2/2020</td>
-                                <td>
-                                    <a class="button is-rounded is-success" href="#" role="button">
-                                        Chỉnh sửa
-                                    </a>
-                                </td>
+                                <td>{{format_date this.contractData.NgayBatDau}}</td>
                             </tr>
 
                             <tr>
                                 <th scope="row">Hiệu lực</th>
-                                <td>12 tháng</td>
-                                <td>
-                                    <a class="button is-rounded is-success" href="#" role="button">
-                                        Chỉnh sửa
-                                    </a>
-                                </td>
+                                <td>{{this.contractData.HieuLuc}} tháng</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Số chi nhánh đăng kí</th>
+                                <td>{{this.contractData.SoChiNhanhDK}}</td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Tình trạng</th>
+                                {{#if isExpired}}
+                                    <td class="text-danger">Sắp Hết Hạn</td>
+                                {{/if}}
+
+                                {{#if isValid}}
+                                    <td class="text-success">Còn hạn</td>
+                                {{/if}}
+
+                                {{#if isPending}}
+                                    <td class="has-text-primary">Đang Duyệt</td>
+                                {{/if}}
                             </tr>
 
 
@@ -72,15 +78,46 @@
                     </table>
                 </div>
 
-                <div class="col-3 d-flex flex-column justify-content-center">
-                    <a class="btn btn-outline-primary mb-5" href="#" role="button">
-                        Lưu
-                    </a>
+                <form method="post" action="/staff/contract/valid">
+                    <input name="idContract" hidden>
+                </form>
 
-                    <a class="btn btn-outline-danger" href="#" role="button">
-                        Thoát
+                <div class="col-3 d-flex flex-column justify-content-center">
+                    {{#if isExpired}}
+                        <a class="btn btn-outline-primary mb-5" href="#" role="button">
+                            Thông báo gia hạn
+                        </a>
+                    {{/if}}
+
+                    {{#if isPending}}
+                        <a class="btn btn-outline-primary mb-5"  role="button" id="pendingBtn" data-id="{{this.contractData.MaHD}}">
+                            Duyệt
+                        </a>
+                    {{/if}}
+                    <a class="btn btn-outline-danger" href="/staff/contract/{{this.urlReturn}}" role="button">
+                        Return
                     </a>
                 </div>
+            </div>
+            <div class="row">
+                <p class="h3 ml-4">Danh sách chi nhánh đăng kí</p>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Mã Chi Nhánh</th>
+                        <th scope="col">Địa Chỉ</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {{#each branchList}}
+                            <tr>
+                                <th scope="row">{{MaChiNhanh}}</th>
+                                <td>{{DiaChi}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
         </div>
 

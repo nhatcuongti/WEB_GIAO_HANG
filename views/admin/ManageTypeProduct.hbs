@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header justify-content-between">
+            <p class="h3">Thêm loại sản phẩm</p>
+            <a  class="btn btn-primary" href="#" role="button">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Thêm
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="card">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Loại Sản Phẩm</th>
+                        <th scope="col">Tiện ích</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {{#each this.typeProduct}}
+                            <tr>
+                                <td>
+                                    {{MALOAIHANG}}
+                                </td>
+
+                                <td>
+                                    {{TENLOAIHANG}}
+                                </td>
+                                <td>
+
+                                    <a  class="btn btn-outline-success" href="#" role="button">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        Chỉnh sửa
+                                    </a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

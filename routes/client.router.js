@@ -102,7 +102,7 @@ router.post('/list', async (req, res) => {
 
 router.get('/my-order' ,async function (req, res) {
     const idAccount = req.session.authIDUser;
-    const orderData = await orderModel.getAllOrder(idAccount);
+    const orderData = await orderModel.getAllOrderFormat(idAccount);
     res.render('client/client_myOrder', {
         layout: 'client.hbs',
         orderData

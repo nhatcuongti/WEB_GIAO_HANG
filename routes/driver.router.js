@@ -11,14 +11,14 @@ router.get('/profile', async function (req, res) {
 
 //Delivery
 //Find Near You
-router.get('/delivery', async function (req, res) {
-    res.render('driver/driver_order_NearYou', {
-        layout: 'driver.hbs'
-    });
-});
+// router.get('/delivery', async function (req, res) {
+//     res.render('driver/driver_order_NearYou', {
+//         layout: 'driver.hbs'
+//     });
+// });
 
 //Find search
-router.get('/delivery/search', async function (req, res) {
+router.get('/delivery', async function (req, res) {
     res.render('driver/driver_order_search', {
         layout: 'driver.hbs'
     });

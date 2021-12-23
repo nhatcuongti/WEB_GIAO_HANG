@@ -132,9 +132,4 @@ router.post('/register/partner', async function (req, res) {
     }
 });
 
-
-
-
-
-
 export default router;
