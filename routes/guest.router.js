@@ -13,30 +13,35 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/', async function (req, res) {
-    console.log('Before check account');
     const account = req.body;
-    var type =  await accountModel.checkAccount(account);
-    console.log("After check account");
-    console.log(typeof type);
-    if (type === null) {
+    var dataUser =  await accountModel.checkAccount(account);
+    console.log(dataUser);
+    if (dataUser === null) {
         console.log("Wrong account");
         var err_message = "Your ID or Password is not valid !!"
-        res.render('guest/login', {
+        return res.render('guest/login', {
             layout: false,
             err_message
         });
     }
+    const type = dataUser.type;
 
     req.session.typeAccount = type;
     req.session.authUser = req.body.username;
     req.session.auth = true;
 
-    if (type === 'client')
+    if (type === 'client'){
+        req.session.authIDUser = dataUser.MaKH;
         res.redirect('/client')
-    else if (type === 'company')
+    }
+    else if (type === 'company'){
+        req.session.authIDUser = dataUser.MADOANHNGHIEP;
         res.redirect('/company/product');
-    else if (type === 'driver')
+    }
+    else if (type === 'driver'){
+        req.session.authIDUser = dataUser.MATX;
         res.redirect('/driver/profile');
+    }
     else if (type === 'admin')
         res.redirect('/admin')
 });

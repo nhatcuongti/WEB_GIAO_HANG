@@ -124,16 +124,32 @@ export default{
             .input('pass', sql.mssql.VarChar, account.password)
             .query('select * from TKNHANVIEN WHERE ID=@id and MK=@pass');
 
-        if (findUserStaff.recordset.length > 0)
-            return 'staff';
-        else if (findUserClient.recordset.length > 0)
-            return 'client';
-        else if (findUserDriver.recordset.length > 0)
-            return 'driver'
-        else if (findUserPartner.recordset.length > 0)
-            return 'company';
-        else if (account.username === 'admin' && account.password === 'admin')
-            return 'admin';
+        if (findUserStaff.recordset.length > 0){
+            const dataUser = findUserStaff.recordset[0];
+            dataUser.type = 'staff';
+            return dataUser;
+        }
+        else if (findUserClient.recordset.length > 0){
+            const dataUser = findUserClient.recordset[0];
+            dataUser.type = 'client';
+            return dataUser;
+        }
+        else if (findUserDriver.recordset.length > 0){
+            const dataUser = indUserDriver.recordset[0];
+            dataUser.type = 'driver';
+            return dataUser;
+        }
+        else if (findUserPartner.recordset.length > 0){
+            const dataUser = findUserPartner.recordset[0];
+            dataUser.type = 'company';
+            return dataUser;
+        }
+        else if (account.username === 'admin' && account.password === 'admin'){
+            const dataUser = {};
+            dataUser.username = 'admin';
+            dataUser.type = 'admin';
+            return dataUser;
+        }
         else
             return null;
     },
@@ -151,11 +167,17 @@ export default{
             return false;
         }
     },
-    async getAccountClientWithID(id){
-        return {
-            id : '1',
-            name : 'Bùi Nguyễn Nhật Hào',
-            address : 'Bình Phước, Lộc Ninh'
-        }
+    async getAccountClientWithID(idAccount){
+        const rawData = await sql.connect.request()
+            .input('idAccount', sql.mssql.VarChar, idAccount)
+            .query('SELECT KH.MaKH AS id, KH.HoTen AS name, KH.DiaChi AS address FROM TKKhachHang TKKH JOIN KhachHang KH ON TKKH.MaKH = KH.MaKH where kh.MaKH = @idAccount');
+        const clientAccount = rawData.recordset[0];
+        return clientAccount;
+
+        // return {
+        //     id : '1',
+        //     name : 'Bùi Nguyễn Nhật Hào',
+        //     address : 'Bình Phước, Lộc Ninh'
+        // }
     }
 }

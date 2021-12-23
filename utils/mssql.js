@@ -4,7 +4,7 @@ const config = {
     user: 'sa',
     password: '123',
     server: 'localhost', // You can use 'localhost\\instance' to connect to named instance
-    database: 'Nhom18_DoAnThucHanh_19HTT2_1',
+    database: 'Nhom18_DoAnThucHanh_19HTT2_2',
     driver: 'msnodesqlv8',
     options: {
         trustedConnection: true

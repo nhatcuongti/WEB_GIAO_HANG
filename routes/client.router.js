@@ -4,11 +4,13 @@ import accountModel from "../models/account.model.js";
 import productModel from "../models/product.model.js";
 import orderModel from "../models/order.model.js";
 import companyModel from "../models/company.model.js";
+import {Login7TokenHandler} from "tedious/lib/token/handler.js";
 const router = express.Router();
 
 
 router.get('/' ,async function (req, res) {
-    const companyList = await clientModel.getCompany();
+    const rawData = await clientModel.getCompany();
+    const companyList = rawData.recordset;
     res.render('client/client_home', {
         layout:'client.hbs',
         companyList
@@ -17,24 +19,8 @@ router.get('/' ,async function (req, res) {
 
 router.get('/branch/:id' ,async function (req, res) {
     const idCompany = req.params.id;
-    // const branchList = companyModel.getBranch(idCompany);
-    const branchList = [
-        {
-            MaChiNhanh : '1',
-            MaDoanhNghiep : idCompany,
-            DiaChi : 'Thành Phố Hồ Chí Minh, Quận 10'
-        },
-        {
-            MaChiNhanh : '2',
-            MaDoanhNghiep : idCompany,
-            DiaChi : 'Bình Phước'
-        },
-        {
-            MaChiNhanh : '1',
-            MaDoanhNghiep : idCompany,
-            DiaChi : 'Hà Nội'
-        }
-    ]
+    const rawData = await companyModel.getBranch(idCompany);
+    const branchList = rawData.recordset;
     res.render('client/client_home_branch', {
         layout:'client.hbs',
         branchList
@@ -44,7 +30,8 @@ router.get('/branch/:id' ,async function (req, res) {
 router.get('/product/:idCompany/:idBranch' ,async function (req, res) {
     const idCompany = req.params.idCompany;
     const idBranch = req.params.idBranch;
-    const products = await clientModel.getProductOfCompany(idCompany, idBranch);
+    const rawData = await clientModel.getProductOfCompany(idCompany, idBranch);
+    const products = rawData.recordset;
     res.render('client/client_product', {
         layout: 'client.hbs',
         products,
@@ -79,7 +66,8 @@ router.post('/product' ,async function (req, res) {
 
 router.get('/list' ,async function (req, res) {
     //Get account with ID
-    const myAccount = await accountModel.getAccountClientWithID('1');
+    const idAccount = req.session.authIDUser;
+    const myAccount = await accountModel.getAccountClientWithID(idAccount);
     //get product
     const cart = req.session.cart;
     if (cart.length === 0){
@@ -98,7 +86,6 @@ router.get('/list' ,async function (req, res) {
         totalPriceProduct += product.price * product.numberProduct;
     }
 
-
     res.render('client/client_list', {
         layout: 'client.hbs',
         cart,
@@ -108,25 +95,28 @@ router.get('/list' ,async function (req, res) {
 });
 
 router.post('/list', async (req, res) => {
-    console.log("Post list ");
-    console.log(req.body);
-    console.log(req.session.cart);
-    //Insert database
-
+    await orderModel.insertOrder(req.body, req.session.cart);
+    req.session.cart = [];
     res.redirect('/client');
 })
 
 router.get('/my-order' ,async function (req, res) {
-    const orderData = await orderModel.getAllOrder('1');
+    const idAccount = req.session.authIDUser;
+    const orderData = await orderModel.getAllOrder(idAccount);
     res.render('client/client_myOrder', {
         layout: 'client.hbs',
         orderData
     });
 });
 
-router.get('/my-order/detail' ,async function (req, res) {
-    const orderDetailData = await orderModel.getOrderDetail('1');
-    const listProducts = await orderModel.getProductWithOrder('1');
+router.get('/my-order/detail/:id' ,async function (req, res) {
+    const idOrder = req.params.id;
+    const orderDetailData = await orderModel.getOrderDetail(idOrder);
+    const listProducts = await orderModel.getProductWithOrder(idOrder);
+    console.log("Order Detail : ");
+    console.log(orderDetailData);
+    console.log("Product list");
+    console.log(listProducts);
     let totalPriceProduct = 0;
     for (const product of listProducts)
         totalPriceProduct += (product.price * product.number);
