@@ -1,0 +1,58 @@
+{{#section 'js'}}
+    <script>
+        $('.acceptBtn').on('click', function() {
+            const orderID = $(this).data('id');
+            $('form > input').val(orderID);
+            alert(orderID);
+            $('form').submit();
+        })
+    </script>
+{{/section}}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <p class="h3">Danh sách đơn hàng đang chờ</p>
+        </div>
+
+        <form method="post" action="/driver/delivery">
+            <input name="orderID" value="" hidden>
+        </form>
+
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Mã đơn hàng</th>
+                    <th scope="col">Địa chỉ Chi Nhánh</th>
+                    <th scope="col">Phí Ship</th>
+                    <th scope="col">Tên Khách hàng</th>
+                    <th scope="col">Địa chỉ KH</th>
+                    <th scope="col">SĐT KH</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each listOrder}}
+                    <tr>
+                        <th scope="row">{{MaDH}}</th>
+                        <td>{{DiaChi_ChiNhanh}}</td>
+                        <td>{{format_number PhiVanChuyen}}</td>
+                        <td>{{HoTen}}</td>
+                        <td>{{DiaChi_KhachHang}}</td>
+                        <td>{{SDT}}</td>
+                        <td class="pb-2">
+                            <a class="button is-rounded is-success acceptBtn"  role="button" data-id="{{MaDH}}">
+                                Xác nhận
+                            </a>
+                        </td>
+                    </tr>
+                {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+

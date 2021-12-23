@@ -44,15 +44,15 @@
         <div class="row h-100">
             <div class="col-sm-3 has-background-grey-lighter h-100 p-0">
                 <div class="list-group ">
-                    <a href="/driver/profile" class="list-group-item list-group-item-action active" aria-current="true">
+                    <a href="/driver" class="list-group-item list-group-item-action {{#if MyOrder}}active{{/if}}" aria-current="true">
                         <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                        <span class="h3 ml-3">Driver Profile</span>
+                        <span class="h3 ml-3">My Order</span>
                     </a>
-                    <a href="/driver/delivery" class="list-group-item list-group-item-action ">
+                    <a href="/driver/delivery" class="list-group-item list-group-item-action {{#if Delivery}}active{{/if}} ">
                         <i class="fa fa-truck fa-2x" aria-hidden="true"></i>
                         <span class="h3 ml-3">Delivery</span>
                     </a>
-                    <a href="/driver/purchase" class="list-group-item list-group-item-action ">
+                    <a href="/driver/revenue" class="list-group-item list-group-item-action {{#if Revenue}}active{{/if}}">
                         <i class="fa fa-money fa-2x" aria-hidden="true"></i>
                         <span class="h3 ml-3">Purchase Manage</span>
                     </a>

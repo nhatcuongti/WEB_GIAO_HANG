@@ -1,0 +1,123 @@
+{{#section 'js'}}
+    <script>
+        $('#acceptBtn').on('click', function(){
+            const val = $(this).data('id');
+            $('form > input').val(val);
+            $('form').submit();
+        })
+    </script>
+{{/section}}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <p class="h2">Đơn hàng đang nhận</p>
+        </div>
+
+        <form method="post" action="/driver/MyOrder">
+            <input name="orderID" hidden>
+        </form>
+
+        <div class="card-body">
+            {{#if isMyOrder}}
+                <div class="row">
+                    <div class="col-9">
+                        <table class="table table-hover">
+                            <!--                        <thead>-->
+                            <!--                            <tr>-->
+                            <!--                                <th scope="col">Hạng mục</th>-->
+                            <!--                                <th scope="col">Nội dung</th>-->
+                            <!--                                <th scope="col">Chỉnh sửa</th>-->
+                            <!--                            </tr>-->
+                            <!--                        </thead>-->
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Khách Hàng</th>
+                                    <td>{{this.orderData.TenKH}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Số Điện Thoại Khách Hàng</th>
+                                    <td>{{this.orderData.SDT_KH}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Địa Chỉ Khách hàng</th>
+                                    <td>{{this.orderData.DC_KH}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Doanh Nghiệp</th>
+                                    <td>{{this.orderData.TenDN}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Chi Nhánh</th>
+                                    <td>{{this.orderData.DC_CN}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th scope="row">Số điện thoại chi nhánh</th>
+                                    <td>{{this.orderData.SDT_CN}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-3 d-flex flex-column justify-content-center">
+                        <a class="btn btn-outline-success mb-5" role="button" id="acceptBtn" data-id="{{this.orderData.MaDH}}">
+                            Xác nhận giao hàng
+                        </a>
+
+                        <a class="btn btn-outline-danger" href="/driver/delivery" role="button">
+                            Thoát
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <p class="my-5 h5">
+                        Danh sách các sản phẩm trong đơn hàng
+                    </p>
+
+                    <table class="table table-dark border">
+                        <thead>
+                        <tr>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Số lượng sản phẩm</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each this.products}}
+                            <tr>
+                                <th scope="row">{{name}}</th>
+                                <td>{{format_number price}}</td>
+                                <td>{{numberProduct}}</td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="row justify-content-end">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-success">
+                            <span>Phí vận Chuyển : 20,000</span>
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            <span>Tổng Tiền : {{format_number this.totalPriceProduct}} </span>
+                        </button>
+                    </div>
+                </div>
+            {{else}}
+                <p class="h2 text-danger"> Hiện tại bạn chưa chọn đơn hàng nào</p>
+            {{/if}}
+
+
+        </div>
+
+    </div>
+</div>
+

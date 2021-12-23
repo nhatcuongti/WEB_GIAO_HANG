@@ -141,5 +141,22 @@ export default{
         //         price : 20000000
         //     }
         // ]
+    },
+    async getOrderDetail_Driver(orderID) {
+        // Khách Hàng	Bùi Nguyễn Nhật Hào
+        // Số Điện Thoại Khách Hàng	0909845284
+        // Địa Chỉ Khách hàng	Bình Phước, Lộc Ninh
+        // Doanh Nghiệp	FPT
+        // Chi Nhánh	Hà Nội
+        // SDT chi nhánh	123456789
+        return {
+            MaDH : '1',
+            TenKH : 'Bùi Nguyễn Nhật Hào',
+            SDT_KH: '0909845284',
+            DC_KH : 'Bình Phước, Lộc Ninh',
+            TenDN : 'FPT',
+            DC_CN : 'Hà Nội',
+            SDT_CN : '0987783897'
+        }
     }
 }

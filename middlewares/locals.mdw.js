@@ -4,7 +4,13 @@ export default function (app) {
     res.locals.isManageTypeProduct = false;
     res.locals.isManagePlaces = false;
 
+    //Staff
     res.locals.StaffProfile = false;
+
+    //Driver
+    res.locals.MyOrder = false;
+    res.locals.Delivery = false;
+    res.locals.Revenue = false;
     next();
   });
 
