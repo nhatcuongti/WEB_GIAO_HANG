@@ -6,7 +6,8 @@ export default{
         return sql.connect.request().query('select * from KHACHHANG');
     },
     async getCompany(){
-        return sql.connect.request().query('SELECT MASOTHUE AS id, TenDoanhNghiep AS Name, LoaiHang AS typeProduct FROM DoanhNghiep')
+        return sql.connect.request().query('SELECT MASOTHUE AS id, TenDoanhNghiep AS Name, TENLOAIHANG AS typeProduct\n' +
+            'FROM DoanhNghiep JOIN LOAIHANG ON LOAIHANG = MALOAIHANG')
     },
     async getProductOfCompany(idCompany, idBranch){
         return sql.connect.request()

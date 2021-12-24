@@ -28,7 +28,7 @@
                         <tbody>
                             <tr>
                                 <th scope="row">Mã Hợp Đồng</th>
-                                <td>{{this.contractData.MaHD}}</td>
+                                <td>{{this.contractData.MAHD}}</td>
                             </tr>
 
                             <tr>
@@ -78,7 +78,7 @@
                     </table>
                 </div>
 
-                <form method="post" action="/staff/contract/valid">
+                <form method="post" action="/staff/contract/detail">
                     <input name="idContract" hidden>
                 </form>
 
@@ -90,7 +90,7 @@
                     {{/if}}
 
                     {{#if isPending}}
-                        <a class="btn btn-outline-primary mb-5"  role="button" id="pendingBtn" data-id="{{this.contractData.MaHD}}">
+                        <a class="btn btn-outline-primary mb-5"  role="button" id="pendingBtn" data-id="{{this.contractData.MAHD}}">
                             Duyệt
                         </a>
                     {{/if}}

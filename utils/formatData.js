@@ -41,8 +41,9 @@ export default{
                 return i.toString()
         }
     },
-    addMonths(date, months) {
-        var d = date.getDate();
+    addMonths(dateCopy, months) {
+        var d = dateCopy.getDate();
+        const date = new Date(dateCopy);
         date.setMonth(date.getMonth() + +months);
         if (date.getDate() != d) {
             date.setDate(0);

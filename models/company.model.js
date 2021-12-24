@@ -3,7 +3,8 @@ import sql from "../utils/mssql.js";
 export default{
     async getBranch(idCompany){
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
-        query('select cn.* from ChiNhanh cn where cn.MaDoanhNghiep = @idCompany');
+        query('SELECT * \n' +
+            'FROM ChiNhanh CN JOIN KhuVucHoatDong KVHD ON CN.DiaChi = KVHD.MAKHUVUC');
     },
     async getBranchNullConstract(idCompany){
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
@@ -62,76 +63,79 @@ export default{
         query('select cn.* from HopDong cn where cn.MaDoanhNghiep = @idCompany');
     },
     async getBranchWithIDContract(idContract){
-        //return sql.connect.request()
-        //      .input('idContract', sql.mssql.VarChar, idContract)
-        //      .query('SELECT MACHINHANH as MaChiNhanh, DiaChi
-        //      FROM ChiNhanh
-        //      WHERE MAHOPDONG=@idContract ')
-        const branchList = [
-            {
-                MaChiNhanh : '1',
-                DiaChi : 'Bình Phước, Lộc Ninh'
-            },
-            {
-                MaChiNhanh : '2',
-                DiaChi : 'Quảng Nam'
-            },
-            {
-                MaChiNhanh : '3',
-                DiaChi : 'Quảng Trị'
-            },
-            {
-                MaChiNhanh : '4',
-                DiaChi : 'Thành Phố Hồ Chí Minh'
-            },
-            {
-                MaChiNhanh : '5',
-                DiaChi : 'Huế'
-            }
-        ];
+        const rawData =await sql.connect.request()
+                             .input('idContract', sql.mssql.VarChar, idContract)
+                             .query('SELECT MACHINHANH as MaChiNhanh, DiaChi\n' +
+                             '             FROM ChiNhanh\n' +
+                             '             WHERE MAHOPDONG=@idContract ')
+        const branchList = rawData.recordset;
+        // const branchList = [
+        //     {
+        //         MaChiNhanh : '1',
+        //         DiaChi : 'Bình Phước, Lộc Ninh'
+        //     },
+        //     {
+        //         MaChiNhanh : '2',
+        //         DiaChi : 'Quảng Nam'
+        //     },
+        //     {
+        //         MaChiNhanh : '3',
+        //         DiaChi : 'Quảng Trị'
+        //     },
+        //     {
+        //         MaChiNhanh : '4',
+        //         DiaChi : 'Thành Phố Hồ Chí Minh'
+        //     },
+        //     {
+        //         MaChiNhanh : '5',
+        //         DiaChi : 'Huế'
+        //     }
+        // ];
         return branchList;
     },
     async getAllContract(){
-        //return sql.connect.request()
-        //      .query('SELECT HD.MaHD, DN.TenDoanhNghiep, HD.NgayBatDau, HD.HieuLuc, HD.DangGiaHan
-        //      FROM HOPDONG HD JOIN DOANHNGHIEP DN ON HD.MaDoanhNghiep = DN.MaSoThue');
-        const contractData = [
-            {
-                MaHD : '1',
-                TenDoanhNghiep : 'FPT',
-                NgayBatDau: new Date(2021, 10, 27),
-                HieuLuc : 6,
-            },
-            {
-                MaHD : '2',
-                TenDoanhNghiep : 'Apple',
-                NgayBatDau: new Date(2021, 8, 27),
-                HieuLuc : 3,
-                DangGiaHan : true
-            },
-            {
-                MaHD : '3',
-                TenDoanhNghiep : 'Microsoft',
-                NgayBatDau: new Date(2021, 5, 27),
-                HieuLuc : 3,
-            }
-        ];
+        const rawData =  await sql.connect.request()
+             .query('SELECT HD.MaHD, DN.TenDoanhNghiep, HD.NgayBatDau, HD.HieuLuc, HD.DangGiaHan FROM HOPDONG HD JOIN DOANHNGHIEP DN ON HD.MaDoanhNghiep = DN.MaSoThue');
+
+        const contractData = rawData.recordset;
+        // const contractData = [
+        //     {
+        //         MaHD : '1',
+        //         TenDoanhNghiep : 'FPT',
+        //         NgayBatDau: new Date(2021, 10, 27),
+        //         HieuLuc : 6,
+        //     },
+        //     {
+        //         MaHD : '2',
+        //         TenDoanhNghiep : 'Apple',
+        //         NgayBatDau: new Date(2021, 8, 27),
+        //         HieuLuc : 3,
+        //         DangGiaHan : true
+        //     },
+        //     {
+        //         MaHD : '3',
+        //         TenDoanhNghiep : 'Microsoft',
+        //         NgayBatDau: new Date(2021, 5, 27),
+        //         HieuLuc : 3,
+        //     }
+        // ];
         return contractData;
     },
     async getContractWithID(idContract){
-        //return sql.connect.request()
-        //      .input('idContract', sql.mssql.VarChar, idContract)
-        //      .query('SELECT MAHD, TenDoanhNghiep, HD.NguoiDaiDien, NgayBatDau, HieuLuc, SoChiNhanhDK
-        //      FROM HopDong HD JOIN DoanhNghiep DN ON HD.MaDoanhNghiep = DN.MaSoThue
-        //      WHERE MaHD=@idContract ')
-        const contractData = {
-            MaHD : '1',
-            TenDoanhNghiep : 'FPT',
-            NguoiDaiDien : 'Nguyễn Văn A',
-            NgayBatDau: '27/05/2021',
-            HieuLuc : 3,
-            SoChiNhanhDK : 3
-        };
+        const rawData = await sql.connect.request()
+                             .input('idContract', sql.mssql.VarChar, idContract)
+                             .query('SELECT MAHD, TenDoanhNghiep, HD.NguoiDaiDien, NgayBatDau, HieuLuc, SoChiNhanhDK\n' +
+                                 '             FROM HopDong HD JOIN DoanhNghiep DN ON HD.MaDoanhNghiep = DN.MaSoThue\n' +
+                                 '             WHERE MaHD=@idContract');
+        const contractData = rawData.recordset[0];
+        // const contractData = {
+        //     MaHD : '1',
+        //     TenDoanhNghiep : 'FPT',
+        //     NguoiDaiDien : 'Nguyễn Văn A',
+        //     NgayBatDau: '27/05/2021',
+        //     HieuLuc : 3,
+        //     SoChiNhanhDK : 3
+        // };
         return contractData
     },
     async updateBranch_Contract(idBranch, idCompany, idContract){
@@ -177,9 +181,9 @@ export default{
     },
 
     async updateDangGiaHanContract(idContract) {
-        // sql.connect.request()
-        //     .input('idContract', sql.mssql.varchar(10), idContract)
-        //     .input('DangGiaHan', sql.mssql.BIT, false)
-        //     .query('UPDATE HopDong Set DangGiaHan=@DangGiaHan where MaHD = @idContract');
+        sql.connect.request()
+            .input('idContract', sql.mssql.VarChar, idContract)
+            .input('DangGiaHan', sql.mssql.BIT, false)
+            .query('UPDATE HopDong Set DangGiaHan=@DangGiaHan where MaHD = @idContract');
     }
 }

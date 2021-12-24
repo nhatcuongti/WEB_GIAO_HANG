@@ -143,75 +143,97 @@ export default{
         // ]
     },
     async getOrderDetailWithID_Driver(orderID) {
-        //const rawData =  await sql.connect.request()
-        //                         .input('orderID', sql.mssql.NVarChar, orderID)
-        //                         .query('SELECT MaDH, KH.HoTen AS TenKH, KH.SDT AS SDT_KH, DH.DiaChiGiao AS DC_KH, DN.TenDoanhNghiep AS TenDN, CN.DiaChi as DC_CN, DN.SoDT AS SDT_CN
-        //                          FROM DonHang DH JOIN KhachHang KH ON DH.MaKH = KH.MaKH
-        // 				            JOIN ChiNhanh CN ON (DH.MaDoanhNghiep = CN.MaDoanhNghiep AND DH.MACHINHANH = CN.MACHINHANH)
-        // 				            JOIN DoanhNghiep DN ON (DN.MaSoThue = DH.MaDoanhNghiep)
-        //                          WHERE MADH = @orderID ')
+        const rawData =  await sql.connect.request()
+                                .input('orderID', sql.mssql.NVarChar, orderID)
+                                .query('SELECT MaDH, KH.HoTen AS TenKH, KH.SDT AS SDT_KH, DH.DiaChiGiao AS DC_KH, DN.TenDoanhNghiep AS TenDN, CN.DiaChi as DC_CN, DN.SoDT AS SDT_CN\n' +
+                                    '        FROM DonHang DH JOIN KhachHang KH ON DH.MaKH = KH.MaKH\n' +
+                                    '        JOIN ChiNhanh CN ON (DH.MaDoanhNghiep = CN.MaDoanhNghiep AND DH.MACHINHANH = CN.MACHINHANH)\n' +
+                                    '        JOIN DoanhNghiep DN ON (DN.MaSoThue = DH.MaDoanhNghiep)\n' +
+                                    'WHERE MADH = @orderID ')
 
-        return {
-            MaDH : '1',
-            TenKH : 'Bùi Nguyễn Nhật Hào',
-            SDT_KH: '0909845284',
-            DC_KH : 'Bình Phước, Lộc Ninh',
-            TenDN : 'FPT',
-            DC_CN : 'Hà Nội',
-            SDT_CN : '0987783897'
-        }
+        const orderData = rawData.recordset[0];
+        return orderData;
+
+        // return {
+        //     MaDH : '1',
+        //     TenKH : 'Bùi Nguyễn Nhật Hào',
+        //     SDT_KH: '0909845284',
+        //     DC_KH : 'Bình Phước, Lộc Ninh',
+        //     TenDN : 'FPT',
+        //     DC_CN : 'Hà Nội',
+        //     SDT_CN : '0987783897'
+        // }
     },
     async getOrderDetail_Driver() {
-        //const rawData =  await sql.connect.request()
-        //                         .input('orderID', sql.mssql.NVarChar, orderID)
-        //                         .query('SELECT MaDH, CN.DiaChi AS DiaChi_ChiNhanh, DH.PhiVanChuyen, KH.HoTen, DH.DiaChiGiao as DiaChi_KhachHang, KH.SDT, DH.TinhTrang AS status
-        //                          FROM DonHang DH JOIN ChiNhanh CN ON DH.MACHINHANH = CN.MACHINHANH
-        // 				            JOIN KhachHang KH ON DH.MaKH = KH.MaKH')
-        return [
-            {
-                MaDH : '1',
-                DiaChi_ChiNhanh : 'Hà Nội',
-                PhiVanChuyen : 20000,
-                HoTen : 'Bùi Nguyễn Nhật Hào',
-                DiaChi_KhachHang : 'Sài Gòn',
-                SDT : '0909845284',
-                status : 0
-            },
-            {
-                MaDH : '2',
-                DiaChi_ChiNhanh : 'Sài Gòn',
-                PhiVanChuyen : 10000,
-                HoTen : 'Bùi Nguyễn Nhật Cường',
-                DiaChi_KhachHang : 'Bình Phước',
-                SDT : '0987783897',
-                status : 0
-            },
-            {
-                MaDH : '3',
-                DiaChi_ChiNhanh : 'Huế',
-                PhiVanChuyen : 20000,
-                HoTen : 'Lê Hoàng Nhật',
-                DiaChi_KhachHang : 'Sài Gòn',
-                SDT : '0909878548',
-                status : 2
-            },
-            {
-                MaDH : '4',
-                DiaChi_ChiNhanh : 'Đà Nẵng',
-                PhiVanChuyen : 20000,
-                HoTen : 'Bùi Nguyễn Nhật Cường',
-                DiaChi_KhachHang : 'Bình Phước',
-                SDT : '0909845284',
-                status : 1
-            }
-        ];
+        const rawData =  await sql.connect.request()
+                                .query('SELECT MaDH, CN.DiaChi AS DiaChi_ChiNhanh, DH.PhiVanChuyen, KH.HoTen, DH.DiaChiGiao as DiaChi_KhachHang, KH.SDT, DH.TinhTrang AS status\n' +
+                                    'FROM DonHang DH JOIN ChiNhanh CN ON DH.MACHINHANH = CN.MACHINHANH\n' +
+                                    '        \t\tJOIN KhachHang KH ON DH.MaKH = KH.MaKH');
+        const orderList = rawData.recordset;
+        return orderList;
+
+        // return [
+        //     {
+        //         MaDH : '1',
+        //         DiaChi_ChiNhanh : 'Hà Nội',
+        //         PhiVanChuyen : 20000,
+        //         HoTen : 'Bùi Nguyễn Nhật Hào',
+        //         DiaChi_KhachHang : 'Sài Gòn',
+        //         SDT : '0909845284',
+        //         status : 0
+        //     },
+        //     {
+        //         MaDH : '2',
+        //         DiaChi_ChiNhanh : 'Sài Gòn',
+        //         PhiVanChuyen : 10000,
+        //         HoTen : 'Bùi Nguyễn Nhật Cường',
+        //         DiaChi_KhachHang : 'Bình Phước',
+        //         SDT : '0987783897',
+        //         status : 0
+        //     },
+        //     {
+        //         MaDH : '3',
+        //         DiaChi_ChiNhanh : 'Huế',
+        //         PhiVanChuyen : 20000,
+        //         HoTen : 'Lê Hoàng Nhật',
+        //         DiaChi_KhachHang : 'Sài Gòn',
+        //         SDT : '0909878548',
+        //         status : 2
+        //     },
+        //     {
+        //         MaDH : '4',
+        //         DiaChi_ChiNhanh : 'Đà Nẵng',
+        //         PhiVanChuyen : 20000,
+        //         HoTen : 'Bùi Nguyễn Nhật Cường',
+        //         DiaChi_KhachHang : 'Bình Phước',
+        //         SDT : '0909845284',
+        //         status : 1
+        //     }
+        // ];
     },
     async updateStatusOrder(orderID, newStatus){
-        //const rawData =  await sql.connect.request()
-        //                         .input('orderID', sql.mssql.VarChar, orderID)
-        //                         .input('newStatus', sql.mssql.Int, newStatus)
-        //                         .query('UPDATE DonHang
-        //                          Set TinhTrang = @newStatus
-        //                          where MaDH = @orderID')
+        return sql.connect.request()
+                .input('orderID', sql.mssql.VarChar, orderID)
+                .input('newStatus', sql.mssql.Int, newStatus)
+                .query('UPDATE DonHang\n' +
+                    'Set TinhTrang = @newStatus\n' +
+                    'where MaDH = @orderID')
+    },
+    async updateDriverIDForOrder(orderID, driverID) {
+        console.log(driverID);
+        return sql.connect.request()
+            .input('orderID', sql.mssql.VarChar, orderID)
+            .input('driverID', sql.mssql.VarChar, driverID)
+            .query('        UPDATE DonHang\n' +
+                '        SET MaTX = @driverID\n' +
+                '        where MaDH = @orderID');
+    },
+    async getOrderOfDriver(driverID) {
+        const rawData = await sql.connect.request()
+                        .input('driverID', sql.mssql.VarChar, driverID)
+                        .query('SELECT * FROM DonHang\n' +
+                            'WHERE MaTX=@driverID');
+        const orderList = rawData.recordset;
+        return orderList;
     }
 }

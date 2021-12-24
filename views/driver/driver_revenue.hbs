@@ -1,85 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Delivery Management</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer"
-    />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-</head>
-
-<body>
-    <div class="container">
+ <div class="container">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header d-flex justify-content-between">
                 <p class="h3">Tổng kết doanh thu</p>
-                <div class="row">
-                    <form>
-                        <div class="form-group">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect01">Tháng</label>
-                                </div>
-                                <select class="custom-select" id="inputGroupSelect01">
-                                  <option selected>1</option>
-                                  <option value="1">2</option>
-                                  <option value="2">3</option>
-                                  <option value="3">4</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect01">Quận</label>
-                                </div>
-                                <select class="custom-select" id="inputGroupSelect01">
-                                  <option selected>Ngày</option>
-                                  <option value="1">1</option>
-                                  <option value="2">2</option>
-                                  <option value="3">3</option>
-                                </select>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
+                <p class="btn btn-primary">
+                    Tổng Doanh Thu :
+                    <span>{{this.revenue}}</span>
+                </p>
+            </div>
+            <div class="card-body">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Ngày</th>
-                            <th scope="col">Tổng đơn</th>
-                            <th scope="col">Số đơn hủy</th>
-                            <th scope="col">Số đơn thành công</th>
-                            <th scope="col">Tổng tiền</th>
-                            <th scope="col"></th>
+                            <th scope="col">Mã Đơn Hàng</th>
+                            <th scope="col">Phí Sản Phẩm</th>
+                            <th scope="col">Phí Vận Chuyển</th>
                         </tr>
                     </thead>
                     <tbody>
+                    {{#each orderDriverList}}
                         <tr>
-                            <th scope="row">12/12/2021</th>
-                            <td>10</td>
-                            <td>20</td>
-                            <td>10</td>
-                            <td>1.500.000</td>
+                            <th scope="row">{{format_date NgayDat}}</th>
+                            <td>{{MaDH}}</td>
+                            <td>{{PhiSanPham}}</td>
+                            <td class="text-success">{{PhiVanChuyen}}</td>
                         </tr>
+                    {{/each}}
 
                     </tbody>
                 </table>
             </div>
-
         </div>
-    </div>
+ </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
-</body>
-
-</html>

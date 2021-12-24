@@ -2,6 +2,7 @@ import express from 'express'
 import accountModel from "../models/account.model.js";
 import formatData from '../utils/formatData.js'
 import {Login7TokenHandler} from "tedious/lib/token/handler.js";
+import driverModel from "../models/driver.model.js";
 
 const router = express();
 let generalData;
@@ -24,13 +25,20 @@ router.post('/', async function (req, res) {
             err_message
         });
     }
+    else if (!dataUser.status){
+        var err_message = "Your account is locked !!"
+        return res.render('guest/login', {
+            layout: false,
+            err_message
+        });
+    }
     const type = dataUser.type;
-
     req.session.typeAccount = type;
     req.session.authUser = req.body.username;
     req.session.auth = true;
 
     if (type === 'client'){
+
         req.session.authIDUser = dataUser.MaKH;
         res.redirect('/client')
     }
@@ -40,7 +48,13 @@ router.post('/', async function (req, res) {
     }
     else if (type === 'driver'){
         req.session.authIDUser = dataUser.MATX;
-        res.redirect('/driver/profile');
+
+        const driverInfor = await driverModel.getDriverWithID(dataUser.MATX);
+        console.log(driverInfor);
+        req.session.activePlace = driverInfor.KHUVUCHD;
+        console.log("Khu vuc hoat dong : " + req.session.activePlace )
+
+        res.redirect('/driver');
     }
     else if (type === 'admin')
         res.redirect('/admin')
@@ -103,7 +117,7 @@ router.post('/register/driver', async function (req, res) {
         req.session.typeAccount = 'driver';
         req.session.authUser = req.body.username;
         req.session.auth = true;
-        res.redirect('/driver/profile');
+        res.redirect('/driver');
     }
 });
 
@@ -118,6 +132,7 @@ router.get('/register/partner', async function (req, res) {
 });
 
 router.post('/register/partner', async function (req, res) {
+    console.log(req.body);
     const check = await accountModel.insertAccountPartner(generalData, req.body);
 
     if (!check)

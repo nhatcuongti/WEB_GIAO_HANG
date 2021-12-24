@@ -14,8 +14,10 @@ router.get('/', async function (req, res) {
 router.get('/contract/valid', async function (req, res) {
     const contractDataTmp = await companyModel.getAllContract();
     const contractData = [];
+    console.log(contractDataTmp);
     for (let contract of contractDataTmp){
         // console.log("---------------------------------------------");
+        // console.log(contract.MaHD)
         const dateEndContract = formatData.addMonths(contract.NgayBatDau, contract.HieuLuc);
         // console.log("Date End : " + dateEndContract.toLocaleString());
         const nowDate = new Date();
@@ -24,7 +26,9 @@ router.get('/contract/valid', async function (req, res) {
         // console.log("duration : " + Math.floor(diffDays));
 
         if (dateEndContract > nowDate && diffDays > 30)
-            contractData.push(contract);
+            if (contract.DangGiaHan !== true){
+                contractData.push(contract);
+            }
         // console.log("---------------------------------------------");
     }
 
@@ -39,14 +43,6 @@ router.get('/contract/valid', async function (req, res) {
     });
 });
 
-router.post('/contract/valid', async function (req, res) {
-
-    const idContract = req.body.idContract;
-    await companyModel.updateDangGiaHanContract(idContract);
-
-    res.redirect('/staff/contract/valid');
-});
-
 router.get('/contract/pending', async function (req, res) {
     const contractDataTmp = await companyModel.getAllContract();
     const contractData = [];
@@ -58,9 +54,9 @@ router.get('/contract/pending', async function (req, res) {
         console.log("Now Date : " + nowDate.toLocaleDateString())
         const diffDays = Math.abs(nowDate - dateEndContract) / (1000 * 60 * 60 * 24 );
         console.log("duration : " + Math.floor(diffDays));
-
-        if (contract.DangGiaHan === true)
-            contractData.push(contract);
+        if (dateEndContract > nowDate && diffDays > 30)
+            if (contract.DangGiaHan === true)
+                contractData.push(contract);
         console.log("---------------------------------------------");
     }
     let isPending = true;
@@ -87,7 +83,6 @@ router.get('/contract/expired', async function (req, res) {
         console.log("duration : " + Math.floor(diffDays));
 
         if (dateEndContract <= nowDate || diffDays < 30)
-            if (contract.DangGiaHan !== true)
                 contractData.push(contract);
         console.log("---------------------------------------------");
     }
@@ -108,6 +103,9 @@ router.get('/contract/detail/:id', async function (req, res) {
     const idContract = req.params.id;
     const contractData = await companyModel.getContractWithID(idContract);
     const branchList = await companyModel.getBranchWithIDContract(idContract);
+
+    console.log('contract detail : ');
+    console.log(contractData);
 
     let isValid = false, isPending = false, isExpired = false;
     let urlReturn = null;
@@ -133,6 +131,14 @@ router.get('/contract/detail/:id', async function (req, res) {
         isExpired,
         urlReturn
     });
+});
+
+router.post('/contract/detail', async function (req, res) {
+    const idContract = req.body.idContract;
+    console.log('Contract to continue : ' + idContract);
+    await companyModel.updateDangGiaHanContract(idContract);
+
+    res.redirect('/staff/contract/valid');
 });
 
 export default router;

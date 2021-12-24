@@ -85,6 +85,8 @@ router.get('/list' ,async function (req, res) {
 
         totalPriceProduct += product.price * product.numberProduct;
     }
+    totalPriceProduct += 20000;
+
 
     res.render('client/client_list', {
         layout: 'client.hbs',

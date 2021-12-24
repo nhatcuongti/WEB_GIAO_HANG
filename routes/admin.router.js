@@ -21,7 +21,7 @@ router.post('/ManageUser/driver', async function (req, res) {
 
     const driverID = req.body.driverID;
     const statusChoice = req.body.statusChoice;
-    //await accountModel.updateAccountStatus('driver' , driverID, statusChoice)
+    await accountModel.updateAccountStatus('driver' , driverID, statusChoice)
 
     res.redirect('/admin/ManageUser/driver');
 });
@@ -51,7 +51,7 @@ router.post('/ManageUser/user', async function (req, res) {
     const userID = req.body.userID;
     const statusChoice = req.body.statusChoice;
     console.log(userID);
-    //await accountModel.updateAccountStatus('user' , userID, statusChoice)
+    await accountModel.updateAccountStatus('user' , userID, statusChoice)
 
     res.redirect('/admin/ManageUser/user');
 });
@@ -73,7 +73,7 @@ router.post('/ManageUser/partner', async function (req, res) {
     const userID = req.body.userID;
     const statusChoice = req.body.statusChoice;
     console.log(userID);
-    //await accountModel.updateAccountStatus('partner' , userID, statusChoice)
+    await accountModel.updateAccountStatus('partner' , userID, statusChoice)
 
     res.redirect('/admin/ManageUser/partner');
 });
@@ -95,7 +95,7 @@ router.post('/ManageUser/staff', async function (req, res) {
     const userID = req.body.userID;
     const statusChoice = req.body.statusChoice;
     console.log(userID);
-    //await accountModel.updateAccountStatus('staff' , userID, statusChoice)
+    await accountModel.updateAccountStatus('staff' , userID, statusChoice)
 
     res.redirect('/admin/ManageUser/staff');
 });
@@ -103,25 +103,26 @@ router.post('/ManageUser/staff', async function (req, res) {
 
 //Manage Type Product
 router.get('/ManageTypeProduct', async function (req, res) {
-    // const typeProduct = await accountModel.getTypeProduct();
-    const typeProduct = [
-        {
-            MALOAIHANG : '1',
-            TENLOAIHANG : 'Điện Thoại'
-        },
-        {
-            MALOAIHANG : '2',
-            TENLOAIHANG : 'Laptop'
-        },
-        {
-            MALOAIHANG : '3',
-            TENLOAIHANG : 'Nội Thất'
-        },
-        {
-            MALOAIHANG : '4',
-            TENLOAIHANG : 'Đồ Ăn'
-        }
-    ]
+    const rawData = await accountModel.getTypeProduct();
+    const typeProduct = rawData.recordset;
+    // const typeProduct = [
+    //     {
+    //         MALOAIHANG : '1',
+    //         TENLOAIHANG : 'Điện Thoại'
+    //     },
+    //     {
+    //         MALOAIHANG : '2',
+    //         TENLOAIHANG : 'Laptop'
+    //     },
+    //     {
+    //         MALOAIHANG : '3',
+    //         TENLOAIHANG : 'Nội Thất'
+    //     },
+    //     {
+    //         MALOAIHANG : '4',
+    //         TENLOAIHANG : 'Đồ Ăn'
+    //     }
+    // ]
 
     res.locals.isManageTypeProduct = true;
     res.render('admin/ManageTypeProduct', {
@@ -131,7 +132,6 @@ router.get('/ManageTypeProduct', async function (req, res) {
 });
 
 router.get('/ManageTypeProduct/add', async function (req, res) {
-    console.log("hello");
     res.locals.isManageTypeProduct = true;
     res.render('admin/ManageTypeProduct_add', {
         layout: 'admin.hbs'
@@ -141,32 +141,34 @@ router.get('/ManageTypeProduct/add', async function (req, res) {
 router.post('/ManageTypeProduct/add', async function (req, res) {
     //Insert into them loai san pham
     const typeProduct = req.body.typeProduct;
-    // await productModel.insertTypeProduct(typeProduct)
+    console.log(typeProduct);
+    await productModel.insertTypeProduct(typeProduct)
 
     res.redirect('/admin/ManageTypeProduct')
 });
 
 //Manage Places
 router.get('/ManagePlaces', async function (req, res) {
-    // const places = await accountModel.getActivePlace();
-    const places = [
-        {
-            MAKHUVUC : '1',
-            TENKHUVUC : 'Thành phố Hồ Chí Minh'
-        },
-        {
-            MAKHUVUC : '2',
-            TENKHUVUC : 'Hà Nội'
-        },
-        {
-            MAKHUVUC : '3',
-            TENKHUVUC : 'Đà Nẵng'
-        },
-        {
-            MAKHUVUC : '4',
-            TENKHUVUC : 'Bình Phước'
-        }
-    ]
+    const rawData = await accountModel.getActivePlace();
+    const places = rawData.recordset;
+    // const places = [
+    //     {
+    //         MAKHUVUC : '1',
+    //         TENKHUVUC : 'Thành phố Hồ Chí Minh'
+    //     },
+    //     {
+    //         MAKHUVUC : '2',
+    //         TENKHUVUC : 'Hà Nội'
+    //     },
+    //     {
+    //         MAKHUVUC : '3',
+    //         TENKHUVUC : 'Đà Nẵng'
+    //     },
+    //     {
+    //         MAKHUVUC : '4',
+    //         TENKHUVUC : 'Bình Phước'
+    //     }
+    // ]
 
     res.locals.isManagePlaces = true;
     res.render('admin/ManagePlaces', {
@@ -187,7 +189,7 @@ router.get('/ManagePlaces/add', async function (req, res) {
 router.post('/ManagePlaces/add', async function (req, res) {
     //Insert into them loai san pham
     const place = req.body.place;
-    //await productModel.insertPlace(place)
+    await productModel.insertPlace(place)
 
     res.redirect('/admin/ManagePlaces')
 });

@@ -32,6 +32,11 @@
                             <!--                        </thead>-->
                             <tbody>
                                 <tr>
+                                    <th scope="row">Mã Đơn Hàng</th>
+                                    <th scope="row">{{this.orderData.MaDH}}</th>
+                                </tr>
+
+                                <tr>
                                     <th scope="row">Khách Hàng</th>
                                     <td>{{this.orderData.TenKH}}</td>
                                 </tr>
@@ -93,7 +98,7 @@
                             <tr>
                                 <th scope="row">{{name}}</th>
                                 <td>{{format_number price}}</td>
-                                <td>{{numberProduct}}</td>
+                                <td>{{number}}</td>
                             </tr>
                         {{/each}}
                         </tbody>

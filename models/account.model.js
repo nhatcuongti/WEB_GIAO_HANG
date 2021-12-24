@@ -126,21 +126,25 @@ export default{
 
         if (findUserStaff.recordset.length > 0){
             const dataUser = findUserStaff.recordset[0];
+            dataUser.status = dataUser.TRANGTHAI;
             dataUser.type = 'staff';
             return dataUser;
         }
         else if (findUserClient.recordset.length > 0){
             const dataUser = findUserClient.recordset[0];
+            dataUser.status = dataUser.TrangThai;
             dataUser.type = 'client';
             return dataUser;
         }
         else if (findUserDriver.recordset.length > 0){
-            const dataUser = indUserDriver.recordset[0];
+            const dataUser = findUserDriver.recordset[0];
+            dataUser.status = dataUser.TRANGTHAI;
             dataUser.type = 'driver';
             return dataUser;
         }
         else if (findUserPartner.recordset.length > 0){
             const dataUser = findUserPartner.recordset[0];
+            dataUser.status = dataUser.trangthai;
             dataUser.type = 'company';
             return dataUser;
         }
@@ -181,122 +185,159 @@ export default{
         // }
     },
     async getAllDriver(){
-        return [
-            {
-                MATX: 'TX014',
-                HOTEN: 'Bùi Nguyễn Nhật Hào',
-                EMAIL: 'nhatcuongti@gmail.com',
-                SDT: '0909845284',
-                TRANGTHAI: true
-            },
-            {
-                MATX: 'TX015',
-                HOTEN: 'Bùi Nguyễn Nhật Cường',
-                EMAIL: 'nhatcuongti@gmail.com',
-                SDT: '0987783897',
-                TRANGTHAI: false
-            },
-            {
-                MATX: 'TX016',
-                HOTEN: 'Bùi Tấn Tài',
-                EMAIL: 'nhatcuongti@gmail.com',
-                SDT: '012316654',
-                TRANGTHAI: true
-            }
-        ]
+        const rawData = await sql.connect.request()
+            .query('SELECT TX.MATX, HOTEN, EMAIL, SDT, TRANGTHAI\n' +
+                'FROM TAIXE TX JOIN TKTAIXE TKTX ON TX.MATX = TKTX.MATX');
+
+        const driverList = rawData.recordset;
+        return driverList;
+
+        // return [
+        //     {
+        //         MATX: 'TX014',
+        //         HOTEN: 'Bùi Nguyễn Nhật Hào',
+        //         EMAIL: 'nhatcuongti@gmail.com',
+        //         SDT: '0909845284',
+        //         TRANGTHAI: true
+        //     },
+        //     {
+        //         MATX: 'TX015',
+        //         HOTEN: 'Bùi Nguyễn Nhật Cường',
+        //         EMAIL: 'nhatcuongti@gmail.com',
+        //         SDT: '0987783897',
+        //         TRANGTHAI: false
+        //     },
+        //     {
+        //         MATX: 'TX016',
+        //         HOTEN: 'Bùi Tấn Tài',
+        //         EMAIL: 'nhatcuongti@gmail.com',
+        //         SDT: '012316654',
+        //         TRANGTHAI: true
+        //     }
+        // ]
     },
     async updateAccountStatus(typeAccount, userID, statusChoice) {
         if(typeAccount === 'driver'){
             console.log('driver');
-            // return await sql.connect.request()
-            //     .input('userID', sql.mssql.VarChar, userID)
-            //     .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0)
-            //     .query('UPDATE TKTAIXE SET TRANGTHAI = @statusChoice WHERE MATX=@userID');
+            return sql.connect.request()
+                .input('userID', sql.mssql.VarChar, userID)
+                .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0))
+                .query('UPDATE TKTAIXE SET TRANGTHAI = @statusChoice WHERE MATX=@userID');
         }
         else if (typeAccount === 'staff'){
-
+            console.log('staff');
+            return sql.connect.request()
+                .input('userID', sql.mssql.VarChar, userID)
+                .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0))
+                .query('UPDATE TKNHANVIEN SET TRANGTHAI = @statusChoice WHERE MANV=@userID');
         }
         else if (typeAccount === 'user'){
             console.log('user');
-            // return await sql.connect.request()
-            //     .input('userID', sql.mssql.VarChar, userID)
-            //     .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0)
-            //     .query('UPDATE TKTAIXE SET TRANGTHAI = @statusChoice WHERE MAKH=@userID');
+            return sql.connect.request()
+                .input('userID', sql.mssql.VarChar, userID)
+                .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0))
+                .query('UPDATE TKKhachHang SET TrangThai = @statusChoice WHERE MAKH=@userID');
         }
         else{
-
+            console.log('partner');
+            return sql.connect.request()
+                .input('userID', sql.mssql.VarChar, userID)
+                .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0))
+                .query('UPDATE TKDoanhNghiep SET trangthai = @statusChoice WHERE MADOANHNGHIEP=@userID');
         }
     },
     async getAllUser() {
-        return [
-            {
-                MaKH: 'TX014',
-                HOTEN: 'Bùi Nguyễn Nhật Hào',
-                EMAIL: 'nhatcuongti@gmail.com',
-                SDT: '0909845284',
-                TrangThai: true
-            },
-            {
-                MaKH: 'TX014',
-                HOTEN: 'Bùi Nguyễn Nhật Cường',
-                EMAIL: 'nhatcuongti@gmail.com',
-                SDT: '0987783897',
-                TrangThai: false
-            },
-            {
-                MaKH: 'TX014',
-                HOTEN: 'Bùi Nguyễn Nhật Hào',
-                EMAIL: 'nhatcuongti@gmail.com',
-                SDT: '0909845284',
-                TrangThai: true
-            }
-        ]
+        const rawData = await sql.connect.request()
+            .query('SELECT KH.MaKH, HOTEN, SDT, EMAIL, TrangThai\n' +
+                'FROM KHACHHANG KH JOIN TKKhachHang TKKH ON KH.MaKH = TKKH.MaKH');
+
+        const userList = rawData.recordset;
+        return userList;
+
+        // return [
+        //     {
+        //         MaKH: 'TX014',
+        //         HOTEN: 'Bùi Nguyễn Nhật Hào',
+        //         EMAIL: 'nhatcuongti@gmail.com',
+        //         SDT: '0909845284',
+        //         TrangThai: true
+        //     },
+        //     {
+        //         MaKH: 'TX014',
+        //         HOTEN: 'Bùi Nguyễn Nhật Cường',
+        //         EMAIL: 'nhatcuongti@gmail.com',
+        //         SDT: '0987783897',
+        //         TrangThai: false
+        //     },
+        //     {
+        //         MaKH: 'TX014',
+        //         HOTEN: 'Bùi Nguyễn Nhật Hào',
+        //         EMAIL: 'nhatcuongti@gmail.com',
+        //         SDT: '0909845284',
+        //         TrangThai: true
+        //     }
+        // ]
     },
     async getAllPartner() {
-        return [
-            {
-                MaSoThue: 'DN25',
-                TenDoanhNghiep: 'FedEx',
-                DiaChiKinhDoanh: 'Trường Chinh',
-                TENLOAIHANG: 'Automotive',
-                trangthai: true
-            },
-            {
-                MaSoThue: 'DN95',
-                TenDoanhNghiep: 'FedEx',
-                DiaChiKinhDoanh: 'Trường Chinh',
-                TENLOAIHANG: 'Automotive',
-                trangthai: true
-            },
-            {
-                MaSoThue: 'DN43',
-                TenDoanhNghiep: 'FedEx',
-                DiaChiKinhDoanh: 'Trường Chinh',
-                TENLOAIHANG: 'Automotive',
-                trangthai: true
-            }
-        ]
+        const rawData = await sql.connect.request()
+            .query('SELECT MaSoThue, TenDoanhNghiep, DiaChiKinhDoanh, TENLOAIHANG, trangthai\n' +
+                'FROM DOANHNGHIEP DN JOIN TKDoanhNghiep TKDN ON DN.MaSoThue = TKDN.MADOANHNGHIEP\t\n' +
+                '\t\t\t\t\tJOIN LOAIHANG LH ON LH.MALOAIHANG = DN.LoaiHang');
+
+        const partnerList = rawData.recordset;
+        return partnerList;
+
+        // return [
+        //     {
+        //         MaSoThue: 'DN25',
+        //         TenDoanhNghiep: 'FedEx',
+        //         DiaChiKinhDoanh: 'Trường Chinh',
+        //         TENLOAIHANG: 'Automotive',
+        //         trangthai: true
+        //     },
+        //     {
+        //         MaSoThue: 'DN95',
+        //         TenDoanhNghiep: 'FedEx',
+        //         DiaChiKinhDoanh: 'Trường Chinh',
+        //         TENLOAIHANG: 'Automotive',
+        //         trangthai: true
+        //     },
+        //     {
+        //         MaSoThue: 'DN43',
+        //         TenDoanhNghiep: 'FedEx',
+        //         DiaChiKinhDoanh: 'Trường Chinh',
+        //         TENLOAIHANG: 'Automotive',
+        //         trangthai: true
+        //     }
+        // ]
     },
     async getAllStaff() {
-        return [
-            {
-                MANV: 'NV007',
-                HOTEN: 'Thy Vân',
-                SDT: '(370) 344-0452',
-                TRANGTHAI: true
-            },
-            {
-                MANV: 'NV007',
-                HOTEN: 'Thy Vân',
-                SDT: '(370) 344-0452',
-                TRANGTHAI: false
-            },
-            {
-                MANV: 'NV007',
-                HOTEN: 'Thy Vân',
-                SDT: '(370) 344-0452',
-                TRANGTHAI: true
-            }
-        ]
+        const rawData = await sql.connect.request()
+            .query('SELECT NV.MANV, NV.HOTEN, NV.SDT, TKNV.TRANGTHAI\n' +
+                'FROM NHANVIEN NV JOIN TKNHANVIEN TKNV ON NV.MANV = TKNV.MANV');
+
+        const staffList = rawData.recordset;
+        return staffList;
+
+        // return [
+        //     {
+        //         MANV: 'NV007',
+        //         HOTEN: 'Thy Vân',
+        //         SDT: '(370) 344-0452',
+        //         TRANGTHAI: true
+        //     },
+        //     {
+        //         MANV: 'NV007',
+        //         HOTEN: 'Thy Vân',
+        //         SDT: '(370) 344-0452',
+        //         TRANGTHAI: false
+        //     },
+        //     {
+        //         MANV: 'NV007',
+        //         HOTEN: 'Thy Vân',
+        //         SDT: '(370) 344-0452',
+        //         TRANGTHAI: true
+        //     }
+        // ]
     }
 }

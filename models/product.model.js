@@ -41,18 +41,17 @@ export default{
         return null;
     },
     async insertTypeProduct(typeProduct) {
-        const rawData = await  sql.connect.request()
+        const idTypeProduct = '1';
+        return sql.connect.request()
             .input('idTypeProduct', sql.mssql.VarChar, idTypeProduct)
             .input('typeProduct', sql.mssql.NVarChar, typeProduct)
-            .query('INSERT INTO LOAIHANG\n' + 'VALUES(@idTypeProduct, @typeProduct');
-
-
-
+            .query('INSERT INTO LOAIHANG VALUES(@idTypeProduct, @typeProduct)');
     },
     async insertPlace(place) {
+        const idPlace = '1';
         const rawData = await  sql.connect.request()
             .input('idPlace', sql.mssql.VarChar, idPlace)
             .input('place', sql.mssql.NVarChar, place)
-            .query('INSERT INTO KhuVucHoatDong\n' + 'VALUES(@idPlace, @place');
+            .query('INSERT INTO KhuVucHoatDong VALUES(@idPlace, @place)');
     }
 }

@@ -25,11 +25,11 @@ app.engine('hbs', engine({
     defaultLayout: 'company.hbs',
     helpers: {
         format_number(val) {
-
             return numeral(val).format('0, 0');
         },
         format_date(val){
-          return val.toLocaleString('en-gb');
+            const day =  val.toLocaleString('en-gb');
+            return day;
         },
         section: hbs_sections()
     }
