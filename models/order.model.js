@@ -142,13 +142,15 @@ export default{
         //     }
         // ]
     },
-    async getOrderDetail_Driver(orderID) {
-        // Khách Hàng	Bùi Nguyễn Nhật Hào
-        // Số Điện Thoại Khách Hàng	0909845284
-        // Địa Chỉ Khách hàng	Bình Phước, Lộc Ninh
-        // Doanh Nghiệp	FPT
-        // Chi Nhánh	Hà Nội
-        // SDT chi nhánh	123456789
+    async getOrderDetailWithID_Driver(orderID) {
+        //const rawData =  await sql.connect.request()
+        //                         .input('orderID', sql.mssql.NVarChar, orderID)
+        //                         .query('SELECT MaDH, KH.HoTen AS TenKH, KH.SDT AS SDT_KH, DH.DiaChiGiao AS DC_KH, DN.TenDoanhNghiep AS TenDN, CN.DiaChi as DC_CN, DN.SoDT AS SDT_CN
+        //                          FROM DonHang DH JOIN KhachHang KH ON DH.MaKH = KH.MaKH
+        // 				            JOIN ChiNhanh CN ON (DH.MaDoanhNghiep = CN.MaDoanhNghiep AND DH.MACHINHANH = CN.MACHINHANH)
+        // 				            JOIN DoanhNghiep DN ON (DN.MaSoThue = DH.MaDoanhNghiep)
+        //                          WHERE MADH = @orderID ')
+
         return {
             MaDH : '1',
             TenKH : 'Bùi Nguyễn Nhật Hào',
@@ -158,5 +160,58 @@ export default{
             DC_CN : 'Hà Nội',
             SDT_CN : '0987783897'
         }
+    },
+    async getOrderDetail_Driver() {
+        //const rawData =  await sql.connect.request()
+        //                         .input('orderID', sql.mssql.NVarChar, orderID)
+        //                         .query('SELECT MaDH, CN.DiaChi AS DiaChi_ChiNhanh, DH.PhiVanChuyen, KH.HoTen, DH.DiaChiGiao as DiaChi_KhachHang, KH.SDT, DH.TinhTrang AS status
+        //                          FROM DonHang DH JOIN ChiNhanh CN ON DH.MACHINHANH = CN.MACHINHANH
+        // 				            JOIN KhachHang KH ON DH.MaKH = KH.MaKH')
+        return [
+            {
+                MaDH : '1',
+                DiaChi_ChiNhanh : 'Hà Nội',
+                PhiVanChuyen : 20000,
+                HoTen : 'Bùi Nguyễn Nhật Hào',
+                DiaChi_KhachHang : 'Sài Gòn',
+                SDT : '0909845284',
+                status : 0
+            },
+            {
+                MaDH : '2',
+                DiaChi_ChiNhanh : 'Sài Gòn',
+                PhiVanChuyen : 10000,
+                HoTen : 'Bùi Nguyễn Nhật Cường',
+                DiaChi_KhachHang : 'Bình Phước',
+                SDT : '0987783897',
+                status : 0
+            },
+            {
+                MaDH : '3',
+                DiaChi_ChiNhanh : 'Huế',
+                PhiVanChuyen : 20000,
+                HoTen : 'Lê Hoàng Nhật',
+                DiaChi_KhachHang : 'Sài Gòn',
+                SDT : '0909878548',
+                status : 2
+            },
+            {
+                MaDH : '4',
+                DiaChi_ChiNhanh : 'Đà Nẵng',
+                PhiVanChuyen : 20000,
+                HoTen : 'Bùi Nguyễn Nhật Cường',
+                DiaChi_KhachHang : 'Bình Phước',
+                SDT : '0909845284',
+                status : 1
+            }
+        ];
+    },
+    async updateStatusOrder(orderID, newStatus){
+        //const rawData =  await sql.connect.request()
+        //                         .input('orderID', sql.mssql.VarChar, orderID)
+        //                         .input('newStatus', sql.mssql.Int, newStatus)
+        //                         .query('UPDATE DonHang
+        //                          Set TinhTrang = @newStatus
+        //                          where MaDH = @orderID')
     }
 }

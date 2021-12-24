@@ -1,5 +1,6 @@
 import express from 'express'
 import accountModel from "../models/account.model.js";
+import productModel from "../models/product.model.js";
 
 const router = express();
 
@@ -44,30 +45,8 @@ router.get('/ManageUser/staff', async function (req, res) {
     });
 });
 
-//Manage Report
-// router.get('/ManageReport', async function (req, res) {
-//     res.locals.isManageReport = true;
-//     res.render('admin/ManageReport', {
-//         layout: 'admin.hbs'
-//     });
-// });
 
-//Manage Updates
-// router.get('/ManageUpdate', async function (req, res) {
-//     res.locals.isManageUpdate = true;
-//     res.render('admin/ManageUpdates', {
-//         layout: 'admin.hbs'
-//     });
-// });
-
-// router.get('/ManageUpdate/detail', async function (req, res) {
-//     res.locals.isManageUpdate = true;
-//     res.render('admin/ManageUpdates_detail', {
-//         layout: 'admin.hbs'
-//     });
-// });
-
-
+//Manage Type Product
 router.get('/ManageTypeProduct', async function (req, res) {
     // const typeProduct = await accountModel.getTypeProduct();
     const typeProduct = [
@@ -96,6 +75,23 @@ router.get('/ManageTypeProduct', async function (req, res) {
     });
 });
 
+router.get('/ManageTypeProduct/add', async function (req, res) {
+    console.log("hello");
+    res.locals.isManageTypeProduct = true;
+    res.render('admin/ManageTypeProduct_add', {
+        layout: 'admin.hbs'
+    });
+});
+
+router.post('/ManageTypeProduct/add', async function (req, res) {
+    //Insert into them loai san pham
+    const typeProduct = req.body.typeProduct;
+    await productModel.insertTypeProduct(typeProduct)
+
+    res.redirect('/admin/ManageTypeProduct')
+});
+
+//Manage Places
 router.get('/ManagePlaces', async function (req, res) {
     // const places = await accountModel.getActivePlace();
     const places = [
@@ -121,6 +117,15 @@ router.get('/ManagePlaces', async function (req, res) {
     res.render('admin/ManagePlaces', {
         layout: 'admin.hbs',
         places
+    });
+});
+
+//Add places
+router.get('/ManagePlaces/add', async function (req, res) {
+
+    res.locals.isManagePlaces = true;
+    res.render('admin/ManagePlaces', {
+        layout: 'admin.hbs'
     });
 });
 

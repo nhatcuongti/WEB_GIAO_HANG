@@ -39,5 +39,8 @@ export default{
                 return product;
         }
         return null;
+    },
+    async insertTypeProduct(typeProduct) {
+
     }
 }

@@ -62,6 +62,11 @@ export default{
         query('select cn.* from HopDong cn where cn.MaDoanhNghiep = @idCompany');
     },
     async getBranchWithIDContract(idContract){
+        //return sql.connect.request()
+        //      .input('idContract', sql.mssql.VarChar, idContract)
+        //      .query('SELECT MACHINHANH as MaChiNhanh, DiaChi
+        //      FROM ChiNhanh
+        //      WHERE MAHOPDONG=@idContract ')
         const branchList = [
             {
                 MaChiNhanh : '1',
@@ -87,6 +92,9 @@ export default{
         return branchList;
     },
     async getAllContract(){
+        //return sql.connect.request()
+        //      .query('SELECT HD.MaHD, DN.TenDoanhNghiep, HD.NgayBatDau, HD.HieuLuc, HD.DangGiaHan
+        //      FROM HOPDONG HD JOIN DOANHNGHIEP DN ON HD.MaDoanhNghiep = DN.MaSoThue');
         const contractData = [
             {
                 MaHD : '1',
@@ -111,6 +119,11 @@ export default{
         return contractData;
     },
     async getContractWithID(idContract){
+        //return sql.connect.request()
+        //      .input('idContract', sql.mssql.VarChar, idContract)
+        //      .query('SELECT MAHD, TenDoanhNghiep, HD.NguoiDaiDien, NgayBatDau, HieuLuc, SoChiNhanhDK
+        //      FROM HopDong HD JOIN DoanhNghiep DN ON HD.MaDoanhNghiep = DN.MaSoThue
+        //      WHERE MaHD=@idContract ')
         const contractData = {
             MaHD : '1',
             TenDoanhNghiep : 'FPT',

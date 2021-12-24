@@ -16,7 +16,8 @@ router.get('/', async function (req, res) {
         });
     }
 
-
+    //Get Products of orderID
+    //const products = orderModel.getProductWithOrder(orderID)
     const products = [
         {
             name : 'Khẩu Trang',
@@ -39,7 +40,7 @@ router.get('/', async function (req, res) {
             numberProduct : 2
         }
     ]
-    const orderData = await orderModel.getOrderDetail_Driver(orderID);
+    const orderData = await orderModel.getOrderDetailWithID_Driver(orderID);
 
     let totalPriceProduct = 0;
     for (const product of products)
@@ -57,7 +58,9 @@ router.get('/', async function (req, res) {
 router.post('/MyOrder', (req, res) => {
     const orderID = req.body.orderID;
     req.session.orderID = undefined;
-    // Update orderID
+    // Update orderID from Status = 1 => status = 2
+    //await updateStatusOrder(orderID, 2)
+
     res.redirect('/driver/delivery');
 })
 
@@ -65,44 +68,7 @@ router.post('/MyOrder', (req, res) => {
 router.get('/delivery', async function (req, res) {
     res.locals.Delivery = true;
     //(MaDH, DiaChi_ChiNhanh, PhiVanChuyen, HoTen, DiaChi_KhachHang, SDT)
-    const listOrderTmp = [
-        {
-            MaDH : '1',
-            DiaChi_ChiNhanh : 'Hà Nội',
-            PhiVanChuyen : 20000,
-            HoTen : 'Bùi Nguyễn Nhật Hào',
-            DiaChi_KhachHang : 'Sài Gòn',
-            SDT : '0909845284',
-            status : 0
-        },
-        {
-            MaDH : '2',
-            DiaChi_ChiNhanh : 'Sài Gòn',
-            PhiVanChuyen : 10000,
-            HoTen : 'Bùi Nguyễn Nhật Cường',
-            DiaChi_KhachHang : 'Bình Phước',
-            SDT : '0987783897',
-            status : 0
-        },
-        {
-            MaDH : '3',
-            DiaChi_ChiNhanh : 'Huế',
-            PhiVanChuyen : 20000,
-            HoTen : 'Lê Hoàng Nhật',
-            DiaChi_KhachHang : 'Sài Gòn',
-            SDT : '0909878548',
-            status : 2
-        },
-        {
-            MaDH : '4',
-            DiaChi_ChiNhanh : 'Đà Nẵng',
-            PhiVanChuyen : 20000,
-            HoTen : 'Bùi Nguyễn Nhật Cường',
-            DiaChi_KhachHang : 'Bình Phước',
-            SDT : '0909845284',
-            status : 1
-        }
-    ];
+    //const listOrderTmp  = await orderModel.getOrderDetail_Driver();
 
     const listOrder = [];
     for (const order of listOrderTmp)
@@ -118,20 +84,11 @@ router.get('/delivery', async function (req, res) {
 router.post('/delivery', async function (req, res) {
     //(MaDH, DiaChi_ChiNhanh, PhiVanChuyen, HoTen, DiaChi_KhachHang, SDT)
     const orderID = req.body.orderID;
-    console.log(orderID);
-    //const order = modelOrder.getOrder(orderID)
-    const order = {
-            MaDH : '1',
-            DiaChi_ChiNhanh : 'Hà Nội',
-            PhiVanChuyen : 20000,
-            HoTen : 'Bùi Nguyễn Nhật Hào',
-            DiaChi_KhachHang : 'Sài Gòn',
-            SDT : '0909845284',
-            status : 0
-        };
+
 
     req.session.orderID = orderID;
     //Update Status order from status = 0 => status = 1
+    //await updateStatusOrder(orderID, 1)
 
 
     res.redirect('/driver');
