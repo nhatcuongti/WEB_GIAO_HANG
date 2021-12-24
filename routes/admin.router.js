@@ -8,9 +8,22 @@ const router = express();
 //Driver
 router.get('/ManageUser/driver', async function (req, res) {
     res.locals.isManageUser = true;
+
+    const driverList = await accountModel.getAllDriver();
     res.render('admin/ManageUser_Driver', {
-        layout: 'admin.hbs'
+        layout: 'admin.hbs',
+        driverList
     });
+});
+
+router.post('/ManageUser/driver', async function (req, res) {
+    res.locals.isManageUser = true;
+
+    const driverID = req.body.driverID;
+    const statusChoice = req.body.statusChoice;
+    //await accountModel.updateAccountStatus('driver' , driverID, statusChoice)
+
+    res.redirect('/admin/ManageUser/driver');
 });
 
 router.get('/', async function (req, res) {
@@ -24,25 +37,67 @@ router.get('/ManageUser', async function (req, res) {
 //User
 router.get('/ManageUser/user', async function (req, res) {
     res.locals.isManageUser = true;
+
+    const userList = await accountModel.getAllUser();
     res.render('admin/ManageUser_User', {
-        layout: 'admin.hbs'
+        layout: 'admin.hbs',
+        userList
     });
+});
+
+router.post('/ManageUser/user', async function (req, res) {
+    res.locals.isManageUser = true;
+
+    const userID = req.body.userID;
+    const statusChoice = req.body.statusChoice;
+    console.log(userID);
+    //await accountModel.updateAccountStatus('user' , userID, statusChoice)
+
+    res.redirect('/admin/ManageUser/user');
 });
 
 //partner
 router.get('/ManageUser/partner', async function (req, res) {
     res.locals.isManageUser = true;
+
+    const userList = await accountModel.getAllPartner();
     res.render('admin/ManageUser_Partner', {
-        layout: 'admin.hbs'
+        layout: 'admin.hbs',
+        userList
     });
+});
+
+router.post('/ManageUser/partner', async function (req, res) {
+    res.locals.isManageUser = true;
+
+    const userID = req.body.userID;
+    const statusChoice = req.body.statusChoice;
+    console.log(userID);
+    //await accountModel.updateAccountStatus('partner' , userID, statusChoice)
+
+    res.redirect('/admin/ManageUser/partner');
 });
 
 //staff
 router.get('/ManageUser/staff', async function (req, res) {
     res.locals.isManageUser = true;
+
+    const userList = await accountModel.getAllStaff();
     res.render('admin/ManageUser_Staff', {
-        layout: 'admin.hbs'
+        layout: 'admin.hbs',
+        userList
     });
+});
+
+router.post('/ManageUser/staff', async function (req, res) {
+    res.locals.isManageUser = true;
+
+    const userID = req.body.userID;
+    const statusChoice = req.body.statusChoice;
+    console.log(userID);
+    //await accountModel.updateAccountStatus('staff' , userID, statusChoice)
+
+    res.redirect('/admin/ManageUser/staff');
 });
 
 
@@ -86,7 +141,7 @@ router.get('/ManageTypeProduct/add', async function (req, res) {
 router.post('/ManageTypeProduct/add', async function (req, res) {
     //Insert into them loai san pham
     const typeProduct = req.body.typeProduct;
-    await productModel.insertTypeProduct(typeProduct)
+    // await productModel.insertTypeProduct(typeProduct)
 
     res.redirect('/admin/ManageTypeProduct')
 });
@@ -124,9 +179,17 @@ router.get('/ManagePlaces', async function (req, res) {
 router.get('/ManagePlaces/add', async function (req, res) {
 
     res.locals.isManagePlaces = true;
-    res.render('admin/ManagePlaces', {
+    res.render('admin/ManagePlaces_add', {
         layout: 'admin.hbs'
     });
+});
+
+router.post('/ManagePlaces/add', async function (req, res) {
+    //Insert into them loai san pham
+    const place = req.body.place;
+    //await productModel.insertPlace(place)
+
+    res.redirect('/admin/ManagePlaces')
 });
 
 

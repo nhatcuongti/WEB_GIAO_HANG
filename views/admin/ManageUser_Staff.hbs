@@ -1,15 +1,21 @@
 {{#section 'js'}}
     <script>
-        $('#activeBtn').on('click', (e) => {
-            $('#lockBtn').attr('class', 'btn');
-            $('#activeBtn').attr('class', 'btn btn-success');
-            alert("Active btn");
+        $('.activeBtn').on('click', function() {
+            const userID = $(this).data('id');
+            $('#userID').val(userID);
+
+            $('#statusChoice').val('active');
+
+            $('form').submit();
         })
 
-        $('#lockBtn').on('click', (e) => {
-            $('#lockBtn').attr('class', 'btn btn-danger');
-            $('#activeBtn').attr('class', 'btn');
-            alert("lock btn");
+        $('.lockBtn').on('click', function() {
+            const userID = $(this).data('id');
+            $('#userID').val(userID);
+
+            $('#statusChoice').val('lock');
+
+            $('form').submit();
         })
     </script>
 {{/section}}
@@ -70,10 +76,12 @@
                     </div>
                 </div>
             </div>
-
-
-
         </div>
+
+        <form method="post">
+            <input name="userID" id="userID" hidden>
+            <input name="statusChoice" id="statusChoice" hidden >
+        </form>
 
         <div class="card-body">
             <table class="table table-hover">
@@ -83,35 +91,28 @@
                         <th scope="col">Name</th>
                         <th scope="col">Phone Number</th>
                         <th scope="col">Active / Lock</th>
-                        <th scope="col">Authorization</th>
-                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
+                {{#each userList}}
                     <tr>
-                        <th scope="row">NV01</th>
-                        <td>Bùi Nguyễn Nhật hào</td>
-                        <td>0987783897</td>
+                        <th scope="row">{{MANV}}</th>
+                        <td>{{HOTEN}}</td>
+                        <td>{{SDT}}</td>
                         <td>
                             <div class="btn-group border" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-success" id="activeBtn">Active</button>
-                                <button type="button" class="btn" id="lockBtn">Lock</button>
+                                <button type="button"
+                                        class="btn {{#if TRANGTHAI}}btn-success{{/if}} activeBtn"
+                                        data-id="{{MANV}}"
+                                        {{#if TRANGTHAI}}disabled{{/if}}>Active</button>
+                                <button type="button"
+                                        class="btn {{#unless TRANGTHAI}}btn-danger{{/unless}} lockBtn"
+                                        data-id="{{MANV}}"
+                                        {{#unless TRANGTHAI}}disabled{{/unless}}>Lock</button>
                             </div>
                         </td>
-                        <td>
-                            <select class="custom-select " id="inputGroupSelect01">
-                                <option selected>Nhân viên cấp 1</option>
-                                <option value="2">Nhân viên cấp 2</option>
-                                <option value="3">Nhân viên cấp 3</option>
-                            </select>
-                        </td>
-                        <td>
-                            <a class="btn btn-danger" href="#" role="button">
-                                Delete
-                            </a>
-                        </td>
                     </tr>
-
+                {{/each}}
                 </tbody>
             </table>
         </div>

@@ -1,15 +1,21 @@
 {{#section 'js'}}
     <script>
-        $('#activeBtn').on('click', (e) => {
-            $('#lockBtn').attr('class', 'btn');
-            $('#activeBtn').attr('class', 'btn btn-success');
-            alert("Active btn");
+        $('.activeBtn').on('click', function() {
+            const userID = $(this).data('id');
+            $('#userID').val(userID);
+
+            $('#statusChoice').val('active');
+
+            $('form').submit();
         })
 
-        $('#lockBtn').on('click', (e) => {
-            $('#lockBtn').attr('class', 'btn btn-danger');
-            $('#activeBtn').attr('class', 'btn');
-            alert("lock btn");
+        $('.lockBtn').on('click', function() {
+            const userID = $(this).data('id');
+            $('#userID').val(userID);
+
+            $('#statusChoice').val('lock');
+
+            $('form').submit();
         })
     </script>
 {{/section}}
@@ -51,6 +57,10 @@
                     </div>
                 </div>
 
+                <form method="post">
+                    <input name="userID" id="userID" hidden>
+                    <input name="statusChoice" id="statusChoice" hidden >
+                </form>
                 <div class="col-6">
                     <div class="input-group mt-5">
                         <input type="text" class="form-control" placeholder="search..." aria-label="Text input with segmented dropdown button">
@@ -88,20 +98,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">PN01</th>
-                        <td>FPT</td>
-                        <td>Hà Nội</td>
-                        <td>Software</td>
-                        <td>
-                            <div class="btn-group border" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-success" id="activeBtn">Active</button>
-                                <button type="button" class="btn" id="lockBtn">Lock</button>
-                            </div>
-                        </td>
+                    {{#each userList}}
+                        <tr>
+                            <th scope="row">{{MaSoThue}}</th>
+                            <td>{{TenDoanhNghiep}}</td>
+                            <td>{{DiaChiKinhDoanh}}</td>
+                            <td>{{TENLOAIHANG}}</td>
+                            <td>
+                                <div class="btn-group border" role="group" aria-label="Basic example">
+                                    <button type="button"
+                                            class="btn {{#if trangthai}}btn-success{{/if}} activeBtn"
+                                            data-id="{{MaSoThue}}"
+                                            {{#if trangthai}}disabled{{/if}}>Active</button>
+                                    <button type="button"
+                                            class="btn {{#unless trangthai}}btn-danger{{/unless}} lockBtn"
+                                            data-id="{{MaSoThue}}"
+                                            {{#unless trangthai}}disabled{{/unless}}>Lock</button>
+                                </div>
+                            </td>
 
-                    </tr>
-
+                        </tr>
+                    {{/each}}
                 </tbody>
             </table>
         </div>

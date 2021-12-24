@@ -40,6 +40,7 @@ app.set('views', './views');
 
 sessionMdw(app);
 localsMdw(app);
+
 app.use('/', guestRouter);
 app.use('/admin', adminRouter);
 app.use('/driver', driverRouter);

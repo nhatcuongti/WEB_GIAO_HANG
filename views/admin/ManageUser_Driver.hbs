@@ -1,15 +1,21 @@
 {{#section 'js'}}
     <script>
-        $('#activeBtn').on('click', (e) => {
-            $('#lockBtn').attr('class', 'btn');
-            $('#activeBtn').attr('class', 'btn btn-success');
-            alert("Active btn");
+        $('.activeBtn').on('click', function() {
+            const driverID = $(this).data('id');
+            $('#driverID').val(driverID);
+
+            $('#statusChoice').val('active');
+
+            $('form').submit();
         })
 
-        $('#lockBtn').on('click', (e) => {
-            $('#lockBtn').attr('class', 'btn btn-danger');
-            $('#activeBtn').attr('class', 'btn');
-            alert("lock btn");
+        $('.lockBtn').on('click', function() {
+            const driverID = $(this).data('id');
+            $('#driverID').val(driverID);
+
+            $('#statusChoice').val('lock');
+
+            $('form').submit();
         })
     </script>
 {{/section}}
@@ -75,6 +81,10 @@
 
         </div>
 
+        <form method="post">
+            <input name="driverID" id="driverID" hidden>
+            <input name="statusChoice" id="statusChoice" hidden >
+        </form>
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
@@ -87,20 +97,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">DRV01</th>
-                        <td>Lê Hoàng Nhật</td>
-                        <td>nhatks14@gmail.com</td>
-                        <td>0987783897</td>
-                        <td>
-                            <div class="btn-group border" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-success" id="activeBtn">Active</button>
-                                <button type="button" class="btn" id="lockBtn">Lock</button>
-                            </div>
-                        </td>
-
-                    </tr>
-
+                    {{#each this.driverList}}
+                        <tr>
+                            <th scope="row">{{MATX}}</th>
+                            <td>{{HOTEN}}</td>
+                            <td>{{EMAIL}}</td>
+                            <td>{{SDT}}</td>
+                            <td>
+                                <div class="btn-group border" role="group" aria-label="Basic example">
+                                    <button type="button"
+                                            class="btn {{#if TRANGTHAI}}btn-success{{/if}} activeBtn"
+                                            data-id="{{MATX}}"
+                                            {{#if TRANGTHAI}}disabled{{/if}}>Active</button>
+                                    <button type="button"
+                                            class="btn {{#unless TRANGTHAI}}btn-danger{{/unless}} lockBtn"
+                                            data-id="{{MATX}}"
+                                            {{#unless TRANGTHAI}}disabled{{/unless}}>Lock</button>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
                 </tbody>
             </table>
         </div>

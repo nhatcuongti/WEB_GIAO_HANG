@@ -1,15 +1,21 @@
 {{#section 'js'}}
     <script>
-        $('#activeBtn').on('click', (e) => {
-            $('#lockBtn').attr('class', 'btn');
-            $('#activeBtn').attr('class', 'btn btn-success');
-            alert("Active btn");
+        $('.activeBtn').on('click', function() {
+            const userID = $(this).data('id');
+            $('#userID').val(userID);
+
+            $('#statusChoice').val('active');
+
+            $('form').submit();
         })
 
-        $('#lockBtn').on('click', (e) => {
-            $('#lockBtn').attr('class', 'btn btn-danger');
-            $('#activeBtn').attr('class', 'btn');
-            alert("lock btn");
+        $('.lockBtn').on('click', function() {
+            const userID = $(this).data('id');
+            $('#userID').val(userID);
+
+            $('#statusChoice').val('lock');
+
+            $('form').submit();
         })
     </script>
 {{/section}}
@@ -50,6 +56,10 @@
                     </div>
                 </div>
 
+                <form method="post">
+                    <input name="userID" id="userID" hidden>
+                    <input name="statusChoice" id="statusChoice" hidden >
+                </form>
                 <div class="col-6">
                     <div class="input-group mt-5">
                         <input type="text" class="form-control" placeholder="search..." aria-label="Text input with segmented dropdown button">
@@ -87,19 +97,27 @@
                     </tr>
                 </thead>
                 <tbody>
+                {{#each userList}}
                     <tr>
-                        <th scope="row">US01</th>
-                        <td>Bùi Nguyễn Nhật hào</td>
-                        <td>nhatcuongti@gmail.com</td>
-                        <td>0909845284</td>
+                        <th scope="row">{{MaKH}}</th>
+                        <td>{{HOTEN}}</td>
+                        <td>{{EMAIL}}</td>
+                        <td>{{SDT}}</td>
                         <td>
                             <div class="btn-group border" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-success" id="activeBtn">Active</button>
-                                <button type="button" class="btn" id="lockBtn">Lock</button>
+                                <button type="button"
+                                        class="btn {{#if TrangThai}}btn-success{{/if}} activeBtn"
+                                        data-id="{{MaKH}}"
+                                        {{#if TrangThai}}disabled{{/if}}>Active</button>
+                                <button type="button"
+                                        class="btn {{#unless TrangThai}}btn-danger{{/unless}} lockBtn"
+                                        data-id="{{MaKH}}"
+                                        {{#unless TrangThai}}disabled{{/unless}}>Lock</button>
                             </div>
                         </td>
 
                     </tr>
+                {{/each}}
 
                 </tbody>
             </table>

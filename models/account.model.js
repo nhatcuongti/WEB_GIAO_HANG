@@ -179,5 +179,124 @@ export default{
         //     name : 'Bùi Nguyễn Nhật Hào',
         //     address : 'Bình Phước, Lộc Ninh'
         // }
+    },
+    async getAllDriver(){
+        return [
+            {
+                MATX: 'TX014',
+                HOTEN: 'Bùi Nguyễn Nhật Hào',
+                EMAIL: 'nhatcuongti@gmail.com',
+                SDT: '0909845284',
+                TRANGTHAI: true
+            },
+            {
+                MATX: 'TX015',
+                HOTEN: 'Bùi Nguyễn Nhật Cường',
+                EMAIL: 'nhatcuongti@gmail.com',
+                SDT: '0987783897',
+                TRANGTHAI: false
+            },
+            {
+                MATX: 'TX016',
+                HOTEN: 'Bùi Tấn Tài',
+                EMAIL: 'nhatcuongti@gmail.com',
+                SDT: '012316654',
+                TRANGTHAI: true
+            }
+        ]
+    },
+    async updateAccountStatus(typeAccount, userID, statusChoice) {
+        if(typeAccount === 'driver'){
+            console.log('driver');
+            // return await sql.connect.request()
+            //     .input('userID', sql.mssql.VarChar, userID)
+            //     .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0)
+            //     .query('UPDATE TKTAIXE SET TRANGTHAI = @statusChoice WHERE MATX=@userID');
+        }
+        else if (typeAccount === 'staff'){
+
+        }
+        else if (typeAccount === 'user'){
+            console.log('user');
+            // return await sql.connect.request()
+            //     .input('userID', sql.mssql.VarChar, userID)
+            //     .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0)
+            //     .query('UPDATE TKTAIXE SET TRANGTHAI = @statusChoice WHERE MAKH=@userID');
+        }
+        else{
+
+        }
+    },
+    async getAllUser() {
+        return [
+            {
+                MaKH: 'TX014',
+                HOTEN: 'Bùi Nguyễn Nhật Hào',
+                EMAIL: 'nhatcuongti@gmail.com',
+                SDT: '0909845284',
+                TrangThai: true
+            },
+            {
+                MaKH: 'TX014',
+                HOTEN: 'Bùi Nguyễn Nhật Cường',
+                EMAIL: 'nhatcuongti@gmail.com',
+                SDT: '0987783897',
+                TrangThai: false
+            },
+            {
+                MaKH: 'TX014',
+                HOTEN: 'Bùi Nguyễn Nhật Hào',
+                EMAIL: 'nhatcuongti@gmail.com',
+                SDT: '0909845284',
+                TrangThai: true
+            }
+        ]
+    },
+    async getAllPartner() {
+        return [
+            {
+                MaSoThue: 'DN25',
+                TenDoanhNghiep: 'FedEx',
+                DiaChiKinhDoanh: 'Trường Chinh',
+                TENLOAIHANG: 'Automotive',
+                trangthai: true
+            },
+            {
+                MaSoThue: 'DN95',
+                TenDoanhNghiep: 'FedEx',
+                DiaChiKinhDoanh: 'Trường Chinh',
+                TENLOAIHANG: 'Automotive',
+                trangthai: true
+            },
+            {
+                MaSoThue: 'DN43',
+                TenDoanhNghiep: 'FedEx',
+                DiaChiKinhDoanh: 'Trường Chinh',
+                TENLOAIHANG: 'Automotive',
+                trangthai: true
+            }
+        ]
+    },
+    async getAllStaff() {
+        return [
+            {
+                MANV: 'NV007',
+                HOTEN: 'Thy Vân',
+                SDT: '(370) 344-0452',
+                TRANGTHAI: true
+            },
+            {
+                MANV: 'NV007',
+                HOTEN: 'Thy Vân',
+                SDT: '(370) 344-0452',
+                TRANGTHAI: false
+            },
+            {
+                MANV: 'NV007',
+                HOTEN: 'Thy Vân',
+                SDT: '(370) 344-0452',
+                TRANGTHAI: true
+            }
+        ]
     }
 }
