@@ -3,7 +3,11 @@ const router = express.Router();
 import companyModel from "../models/company.model.js";
 
 router.get('/product' ,async function (req, res) {
-    res.render('company/product');
+    const idUser = req.session.authIDUser;
+    var temp = await companyModel.getProductByComID(idUser)
+    res.render('company/product',{
+        data: temp.recordset
+    });
 });
 router.get('/product/add' ,async function (req, res) {
 
@@ -83,26 +87,39 @@ router.get('/order/detail' ,async function (req, res) {
     });
 });
 router.get('/contract' ,async function (req, res) {
-    var temp = await companyModel.getContract('dn01')
+    const idUser = req.session.authIDUser;
+    var temp = await companyModel.getContract(idUser)
     res.render('company/contract',{
         data: temp.recordset
     });
 });
 
 router.get('/contract/add' ,async function (req, res) {
-    const br =    await companyModel.getBranchNullConstract('dn01')
-    // console.log(br.recordset)
+    const idUser = req.session.authIDUser;
+    const br =    await companyModel.getBranchNullConstract(idUser)
+     console.log(idUser)
     res.render('company/addContract',{
-        data: br.recordset
+        data: br.recordset,
+        idUser: idUser
+    });
+});
+router.get('/contract/update' ,async function (req, res) {
+    const idUser = req.session.authIDUser;
+    const br =    await companyModel.getBranchNullConstract(idUser)
+    console.log(idUser)
+    res.render('company/addContract',{
+        data: br.recordset,
+        idUser: idUser
     });
 });
 router.post('/contract/add' ,async function (req, res) {
-    var temp = await companyModel.getContract('dn01')
+    const idUser = req.session.authIDUser;
+    var temp = await companyModel.getAllContractID(idUser)
     var id = companyModel.increaContractID(temp.recordset)
-    await companyModel.insertContract(id,'dn01',req.body.daidien,
+    await companyModel.insertContract(id,idUser,req.body.daidien,
         Object.keys(req.body.selection).length,req.body.date,req.body.time)
-    console.log(req.body.selection)
-    await companyModel.updateBranch_Contract(req.body.selection,'dn01',id)
+    console.log(req.body.selection.valueOf())
+    await companyModel.updateBranch_Contract(req.body.selection,idUser,id)
     res.redirect('/company/contract')
 });
 

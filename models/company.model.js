@@ -75,6 +75,10 @@ export default{
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
         query('select cn.* from HopDong cn where cn.MaDoanhNghiep = @idCompany');
     },
+    async getAllContractID(idCompany){
+        return sql.connect.request().
+        query('select cn.* from HopDong cn');
+    },
     async getBranchWithIDContract(idContract){
         const rawData =await sql.connect.request()
                              .input('idContract', sql.mssql.VarChar, idContract)
@@ -153,12 +157,21 @@ export default{
     },
     async updateBranch_Contract(idBranch, idCompany, idContract){
         try{
-            idBranch.forEach(function (e){
-                sql.connect.request().input('idBranch', sql.mssql.VarChar(5), e).
+            if((typeof idBranch) === "string"){
+                sql.connect.request().input('idBranch', sql.mssql.VarChar(5), idBranch).
                 input('idCompany', sql.mssql.VarChar, idCompany).
                 input('idContract',sql.mssql.VarChar, idContract).
                 query('UPDATE ChiNhanh Set MaHopDong=@idContract where MACHINHANH = @idBranch and MaDoanhNghiep = @idCompany');
-            })
+            }
+            else{
+                idBranch.forEach(function (e){
+                    sql.connect.request().input('idBranch', sql.mssql.VarChar(5), e).
+                    input('idCompany', sql.mssql.VarChar, idCompany).
+                    input('idContract',sql.mssql.VarChar, idContract).
+                    query('UPDATE ChiNhanh Set MaHopDong=@idContract where MACHINHANH = @idBranch and MaDoanhNghiep = @idCompany');
+                })
+            }
+
         }catch(e){
             console.log(e)
             return false;
@@ -210,6 +223,11 @@ export default{
     async getProductDetailByOrderID(idCompany) {
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
         query('SELECT * FROM DonHang dh join DonHang_SP dhsp on dh.madh = dhsp.madh  join SANPHAM sp on sp.masp = dhsp.masp WHERE dh.MaDH = @idCompany');
+
+    },
+    async getProductByComID(idCompany) {
+        return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
+        query('SELECT sp.* FROM SANPHAM sp join CHINHANH_SP cnsp on sp.masp = cnsp.masp WHERE cnsp.madoanhnghiep = @idCompany');
 
     }
 }

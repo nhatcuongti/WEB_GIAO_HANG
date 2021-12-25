@@ -1,8 +1,8 @@
 <form action="/company/contract/add" method="post">
 
-<div class="mt-3">
-    <span>Mã số thuế:</span>
-    <span class="ml-5"><input type="text" name="maST"></span>
+<div class="mt-3" hidden>
+    <span hidden>Mã số thuế:</span>
+    <span class="ml-5"><input type="text" name="maST" value="{{idUser}}" hidden></span>
 </div>
 <div class="mt-3">
     <span>Người đại diện:</span>
@@ -28,10 +28,10 @@
         <tbody>
         {{#each data}}
             <tr>
-                <th scope="row">{{MaChiNhanh}}</th>
+                <th scope="row">{{MACHINHANH}}</th>
                 <td>{{DiaChi}}</td>
                 <td class="text-center">
-                    <input class="form-check-input" type="checkbox" name="selection" id="exampleRadios2" value="{{MaChiNhanh}}">
+                    <input class="form-check-input" type="checkbox" name="selection" id="exampleRadios2" value="{{MACHINHANH}}">
                 </td>
             </tr>
         {{/each}}
