@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    >>>>>>> Stashed changes
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <style>
@@ -34,37 +33,9 @@
     </div>
     <div class="navbar-menu align-items-center">
         <h1 class="h2">Online Delivery</h1>
-        <form class="navbar-item ml-auto">
-            <div class="control has-icons-left">
-                <input class="input" type="text" placeholder="Nhập từ khóa tìm kiếm">
-                <span class="icon is-left is-small">
-                        <i class="fa fa-search"></i>
-                    </span>
-            </div>
-            <div class="select">
-                <select>
-                    <option value="name">Theo tên</option>
-                    <option value="category">Theo danh mục</option>
-                </select>
-            </div>
-            <div>&nbsp&nbsp&nbsp&nbsp</div>
-            <button class="button is-success" type="submit">
-                <span>Tìm kiếm</span>
-                <span class="icon is-small">
-                        <i class="fa fa-search"></i>
-                    </span>
-            </button>
-        </form>
         <div class="navbar-end">
             <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary" href="/">
-                        <strong>Đăng nhập</strong>
-                    </a>
-                    <a class="button is-light" href="/register">
-                        Đăng ký
-                    </a>
-                </div>
+                <p class="h3">Hello, {{authUser}}</p>
             </div>
         </div>
     </div>
@@ -72,13 +43,27 @@
 <div class="container-fluid h-100">
     <div class="row h-100">
 
-            <div class="col-sm-3 has-background-grey-lighter h-100">
-                <nav class="nav flex-column">
-                    <a class="nav-link active" href="/company/product">Product</a>
-                    <a class="nav-link" href="/company/branch">Branch</a>
-                    <a class="nav-link" href="/company/order">Order</a>
-                    <a class="nav-link" href="/company/contract">Contract</a>
-                </nav>
+            <div class="col-sm-3 has-background-grey-lighter h-100 p-0">
+                <div class="list-group ">
+                    <a href="/company/product" class="list-group-item list-group-item-action {{#if MyOrder}}active{{/if}}" aria-current="true">
+                        <span class="h3 ml-3">Product</span>
+                    </a>
+                    <a href="/company/branch" class="list-group-item list-group-item-action">
+                        <span class="h3 ml-3">Branch</span>
+                    </a>
+                    <a href="/company/order" class="list-group-item list-group-item-action">
+                        <span class="h3 ml-3">Order</span>
+                    </a>
+                    <a href="/company/contract" class="list-group-item list-group-item-action">
+                        <span class="h3 ml-3">Contract</span>
+                    </a>
+                </div>
+<!--                <nav class="nav flex-column">-->
+<!--                    <a class="nav-link active" href="/company/product">Product</a>-->
+<!--                    <a class="nav-link" href="/company/branch">Branch</a>-->
+<!--                    <a class="nav-link" href="/company/order">Order</a>-->
+<!--                    <a class="nav-link" href="/company/contract">Contract</a>-->
+<!--                </nav>-->
             </div>
             <div class="col-sm-9">{{{body}}}</div>
         </div>
