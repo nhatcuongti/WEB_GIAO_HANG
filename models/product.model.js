@@ -1,5 +1,7 @@
 import sql from "../utils/mssql.js";
 import knexObj from '../utils/knex.js'
+import accountModel from "./account.model.js";
+import formatData from "../utils/formatData.js";
 
 export default{
     async getNameProductWithID(idProduct){
@@ -41,15 +43,21 @@ export default{
         return null;
     },
     async insertTypeProduct(typeProduct) {
-        const idTypeProduct = '1';
+        const rawData = await accountModel.getTypeProduct();
+        const typeProductList = rawData.recordset;
+
+        const idTypeProduct = formatData.increaseTypeProductID(typeProductList);
         return sql.connect.request()
             .input('idTypeProduct', sql.mssql.VarChar, idTypeProduct)
             .input('typeProduct', sql.mssql.NVarChar, typeProduct)
             .query('INSERT INTO LOAIHANG VALUES(@idTypeProduct, @typeProduct)');
     },
     async insertPlace(place) {
-        const idPlace = '1';
-        const rawData = await  sql.connect.request()
+        const rawData = await accountModel.getActivePlace();
+        const places = rawData.recordset;
+
+        const idPlace = formatData.increaseActivePlace(places);
+        return  sql.connect.request()
             .input('idPlace', sql.mssql.VarChar, idPlace)
             .input('place', sql.mssql.NVarChar, place)
             .query('INSERT INTO KhuVucHoatDong VALUES(@idPlace, @place)');

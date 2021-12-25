@@ -99,13 +99,6 @@ export default{
             return false;
         }
     },
-    async insertAccount_tmp(account){
-        try{
-            return knexObj('TKTAIXE');
-        }catch(e){
-            return false;
-        }
-    },
     async checkAccount(account) {
         const findUserDriver = await sql.connect.request()
             .input('id', sql.mssql.VarChar, account.username)
@@ -152,6 +145,7 @@ export default{
             const dataUser = {};
             dataUser.username = 'admin';
             dataUser.type = 'admin';
+            dataUser.status = true;
             return dataUser;
         }
         else

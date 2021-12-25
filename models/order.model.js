@@ -15,7 +15,7 @@ export default{
 
             const orderList = rawOrderData.recordset;
             // orderData.MaDH = formatData.increaseOrderID(orderList);
-            orderData.MaDH = '3';
+            orderData.MaDH = formatData.increaseOrderID(orderList);
             orderData.phiVanChuyen = body.shipPrice;
             orderData.TinhTrang = 0;
             orderData.HinhThucThanhToan = body.typePurchase;

@@ -41,6 +41,34 @@ export default{
                 return i.toString()
         }
     },
+    increaseTypeProductID(arr){
+        if(Object.keys(arr).length === 0)
+            return '0'
+
+        for(var i = 0; i < 100; i++){
+            var check = 0;
+            arr.forEach(function (e){
+                if(e.MALOAIHANG === (i.toString()))
+                    check = 1;
+            })
+            if(check === 0)
+                return i.toString()
+        }
+    },
+    increaseActivePlace(arr){
+        if(Object.keys(arr).length === 0)
+            return '0'
+
+        for(var i = 0; i < 100; i++){
+            var check = 0;
+            arr.forEach(function (e){
+                if(e.MAKHUVUC === (i.toString()))
+                    check = 1;
+            })
+            if(check === 0)
+                return i.toString()
+        }
+    },
     addMonths(dateCopy, months) {
         var d = dateCopy.getDate();
         const date = new Date(dateCopy);
