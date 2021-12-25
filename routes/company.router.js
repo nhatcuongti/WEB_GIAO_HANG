@@ -116,8 +116,13 @@ router.post('/contract/add' ,async function (req, res) {
     const idUser = req.session.authIDUser;
     var temp = await companyModel.getAllContractID(idUser)
     var id = companyModel.increaContractID(temp.recordset)
-    const check = await companyModel.insertContract(id,idUser,req.body.daidien,
-        Object.keys(req.body.selection).length,req.body.date,req.body.time)
+    var count
+    if((typeof req.body.selection) === "string")
+        count = 1;
+    else
+        count = Object.keys(req.body.selection).length
+    const check = await companyModel.insertContract(id,idUser,req.body.daidien,count
+        ,req.body.date,req.body.time)
     console.log(check)
     if(check.recordset[0].check)
         await companyModel.updateBranch_Contract(req.body.selection,idUser,id)
