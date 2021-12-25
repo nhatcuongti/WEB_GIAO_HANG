@@ -345,6 +345,9 @@ export default{
             .query('exec sp_DangNhapNhanVien @taikhoan, @matkhau');
 
 
+        console.log("Raw Data : ");
+        console.log(rawData);
+
         const staffList = rawData.recordset[0];
         return staffList;
     },

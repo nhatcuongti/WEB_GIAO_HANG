@@ -97,14 +97,14 @@ router.post('/ManageUser/staff', async function (req, res) {
     let statusChoice = req.body.statusChoice;
     const TKNV = req.body.TKNV;
 
-    await accountModel.updateAccountStatus('staff', userID, statusChoice, TKNV);
+    // await accountModel.updateAccountStatus('staff', userID, statusChoice, TKNV);
 
-    // if (statusChoice === 'lock')
-    //     await accountModel.lockStaff(TKNV);
-    // else if (statusChoice === 'delete')
-    //     await accountModel.deleteStaff(TKNV);
-    // else
-    //     await accountModel.updateAccountStatus('staff' , userID, statusChoice, TKNV)
+    if (statusChoice === 'lock')
+        await accountModel.lockStaff(TKNV);
+    else if (statusChoice === 'delete')
+        await accountModel.deleteStaff(TKNV);
+    else
+        await accountModel.updateAccountStatus('staff' , userID, statusChoice, TKNV)
 
     res.redirect('/admin/ManageUser/staff');
 });
