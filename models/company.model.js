@@ -63,7 +63,7 @@ export default{
             input('idCompany', sql.mssql.VarChar, idCompany).
             input('ngdaidien',sql.mssql.VarChar, ngdaidien).
             input('sochinhanhdk', sql.mssql.Int, sochinhanhdk).
-            input('date', sql.mssql.DateTime, date).
+            input('date', sql.mssql.Date, date).
             input('time', sql.mssql.Int, time).
             query('EXEC INSERT_HopDong @idContract, @ngdaidien, @sochinhanhdk, @time, 0.1,@date, @idCompany ');
         }catch(e){
@@ -112,7 +112,7 @@ export default{
     },
     async getAllContract(){
         const rawData =  await sql.connect.request()
-             .query('SELECT HD.MaHD, DN.TenDoanhNghiep, HD.NgayBatDau, HD.HieuLuc, HD.DangGiaHan FROM HOPDONG HD JOIN DOANHNGHIEP DN ON HD.MaDoanhNghiep = DN.MaSoThue');
+             .query('exec viewAllContract');
 
         const contractData = rawData.recordset;
         // const contractData = [
@@ -171,7 +171,6 @@ export default{
                     query('UPDATE ChiNhanh Set MaHopDong=@idContract where MACHINHANH = @idBranch and MaDoanhNghiep = @idCompany');
                 })
             }
-
         }catch(e){
             console.log(e)
             return false;

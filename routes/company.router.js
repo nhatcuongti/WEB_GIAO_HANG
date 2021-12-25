@@ -116,10 +116,11 @@ router.post('/contract/add' ,async function (req, res) {
     const idUser = req.session.authIDUser;
     var temp = await companyModel.getAllContractID(idUser)
     var id = companyModel.increaContractID(temp.recordset)
-    await companyModel.insertContract(id,idUser,req.body.daidien,
+    const check = await companyModel.insertContract(id,idUser,req.body.daidien,
         Object.keys(req.body.selection).length,req.body.date,req.body.time)
-    console.log(req.body.selection.valueOf())
-    await companyModel.updateBranch_Contract(req.body.selection,idUser,id)
+    console.log(check)
+    if(check.recordset[0].check)
+        await companyModel.updateBranch_Contract(req.body.selection,idUser,id)
     res.redirect('/company/contract')
 });
 
