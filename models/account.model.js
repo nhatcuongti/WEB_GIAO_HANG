@@ -112,44 +112,43 @@ export default{
             .input('id', sql.mssql.VarChar, account.username)
             .input('pass', sql.mssql.VarChar, account.password)
             .query('select * from TKDOANHNGHIEP WHERE ID=@id and MK=@pass');
-        const findUserStaff= await sql.connect.request()
-            .input('id', sql.mssql.VarChar, account.username)
-            .input('pass', sql.mssql.VarChar, account.password)
-            .query('select * from TKNHANVIEN WHERE ID=@id and MK=@pass');
+        // const findUserStaff= await sql.connect.request()
+        //     .input('id', sql.mssql.VarChar, account.username)
+        //     .input('pass', sql.mssql.VarChar, account.password)
+        //     .query('select * from TKNHANVIEN WHERE ID=@id and MK=@pass');
 
-        if (findUserStaff.recordset.length > 0){
-            const dataUser = findUserStaff.recordset[0];
-            dataUser.status = dataUser.TRANGTHAI;
-            dataUser.type = 'staff';
-            return dataUser;
-        }
-        else if (findUserClient.recordset.length > 0){
+        if (findUserClient.recordset.length > 0) {
             const dataUser = findUserClient.recordset[0];
             dataUser.status = dataUser.TrangThai;
             dataUser.type = 'client';
             return dataUser;
-        }
-        else if (findUserDriver.recordset.length > 0){
+        } else if (findUserDriver.recordset.length > 0) {
             const dataUser = findUserDriver.recordset[0];
             dataUser.status = dataUser.TRANGTHAI;
             dataUser.type = 'driver';
             return dataUser;
-        }
-        else if (findUserPartner.recordset.length > 0){
+        } else if (findUserPartner.recordset.length > 0) {
             const dataUser = findUserPartner.recordset[0];
             dataUser.status = dataUser.trangthai;
             dataUser.type = 'company';
             return dataUser;
-        }
-        else if (account.username === 'admin' && account.password === 'admin'){
+        } else if (account.username === 'admin' && account.password === 'admin') {
             const dataUser = {};
             dataUser.username = 'admin';
             dataUser.type = 'admin';
             dataUser.status = true;
             return dataUser;
+        } else {
+            const data = await this.staffLogin(account.username, account.password);
+            console.log("Staff when received : ")
+            console.log(data);
+            if (data === undefined)
+                return null;
+
+            data.type = 'staff';
+            data.status = data.TRANGTHAI;
+            return data;
         }
-        else
-            return null;
     },
     async getActivePlace(){
         try{
@@ -210,7 +209,8 @@ export default{
         //     }
         // ]
     },
-    async updateAccountStatus(typeAccount, userID, statusChoice) {
+    async updateAccountStatus(typeAccount, userID, statusChoice, TKNV) {
+        console.log("Update Account");
         if(typeAccount === 'driver'){
             console.log('driver');
             return sql.connect.request()
@@ -220,10 +220,13 @@ export default{
         }
         else if (typeAccount === 'staff'){
             console.log('staff');
+            console.log("User ID : " + TKNV);
+            console.log("Status Choice : " + statusChoice);
             return sql.connect.request()
-                .input('userID', sql.mssql.VarChar, userID)
+                .input('userID', sql.mssql.VarChar, TKNV)
                 .input('statusChoice',  sql.mssql.Int, (statusChoice === 'active' ? 1 : 0))
-                .query('UPDATE TKNHANVIEN SET TRANGTHAI = @statusChoice WHERE MANV=@userID');
+                .query('EXEC CapNhatTrangThaiNV @userID, @statusChoice');
+                // .query('UPDATE TKNHANVIEN SET TRANGTHAI = @statusChoice WHERE MANV=@userID');
         }
         else if (typeAccount === 'user'){
             console.log('user');
@@ -307,7 +310,7 @@ export default{
     },
     async getAllStaff() {
         const rawData = await sql.connect.request()
-            .query('SELECT NV.MANV, NV.HOTEN, NV.SDT, TKNV.TRANGTHAI\n' +
+            .query('SELECT TKNV.ID, NV.MANV, NV.HOTEN, NV.SDT, TKNV.TRANGTHAI\n' +
                 'FROM NHANVIEN NV JOIN TKNHANVIEN TKNV ON NV.MANV = TKNV.MANV');
 
         const staffList = rawData.recordset;
@@ -333,5 +336,45 @@ export default{
         //         TRANGTHAI: true
         //     }
         // ]
+    },
+    //Dùng để chạy demo
+    async staffLogin(id, mk) {
+        const rawData = await sql.connect.request()
+            .input('taikhoan', sql.mssql.VarChar, id)
+            .input('matkhau', sql.mssql.VarChar, mk)
+            .query('exec sp_DangNhapNhanVien @taikhoan, @matkhau');
+
+
+        const staffList = rawData.recordset[0];
+        return staffList;
+    },
+    async lockStaff(id){
+        const rawData = await sql.connect.request()
+            .input('taikhoan', sql.mssql.VarChar, id)
+            .query('exec sp_KhoaTaiKhoanNhanVien @taikhoan');
+
+
+        const staffList = rawData.recordset;
+        return staffList;
+    },
+    async deleteStaff(id){
+        const rawData = await sql.connect.request()
+            .input('taikhoan', sql.mssql.VarChar, id)
+            .query('exec sp_XoaTaiKhoanNhanVien @taikhoan');
+
+
+        console.log(rawData);
+        return null;
+    },
+    async changePassword(id, newPassword){
+        const rawData = await sql.connect.request()
+            .input('taikhoan', sql.mssql.VarChar, id)
+            .input('password', sql.mssql.VarChar, newPassword)
+            .query('EXEC DoiMatKhau @taikhoan, @password');
+
+        console.log(rawData);
+        return null;
     }
+
+
 }

@@ -1,6 +1,7 @@
 import express from 'express'
 import companyModel from "../models/company.model.js";
 import formatData from "../utils/formatData.js";
+import accountModel from "../models/account.model.js";
 
 const router = express();
 
@@ -9,6 +10,25 @@ router.get('/', async function (req, res) {
     res.render('staff/staff_profile', {
         layout:'staff.hbs'
     });
+});
+
+router.get('/password', async function (req, res) {
+    res.locals.StaffProfile = true;
+    res.render('staff/staff_password', {
+        layout:'staff.hbs'
+    });
+});
+
+router.post('/password', async function (req, res) {
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+
+    console.log("old Password : " + oldPassword);
+    console.log("New Password : " + newPassword);
+    const idAccount = req.session.authUser
+    console.log("ID Account : " + idAccount);
+    await accountModel.changePassword(idAccount, newPassword);
+    res.redirect('/staff');
 });
 
 router.get('/contract/valid', async function (req, res) {

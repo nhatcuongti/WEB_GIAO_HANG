@@ -2,8 +2,10 @@
     <script>
         $('.activeBtn').on('click', function() {
             const userID = $(this).data('id');
-            $('#userID').val(userID);
+            const TKNV = $(this).data('myval');
 
+            $('#userID').val(userID);
+            $('#TKNV').val(TKNV);
             $('#statusChoice').val('active');
 
             $('form').submit();
@@ -11,9 +13,22 @@
 
         $('.lockBtn').on('click', function() {
             const userID = $(this).data('id');
-            $('#userID').val(userID);
+            const TKNV = $(this).data('myval');
 
+            $('#userID').val(userID);
+            $('#TKNV').val(TKNV);
             $('#statusChoice').val('lock');
+
+            $('form').submit();
+        })
+
+        $('.deleteBtn').on('click', function() {
+            const userID = $(this).data('id');
+            const TKNV = $(this).data('myval');
+
+            $('#userID').val(userID);
+            $('#TKNV').val(TKNV);
+            $('#statusChoice').val('delete');
 
             $('form').submit();
         })
@@ -80,6 +95,7 @@
 
         <form method="post">
             <input name="userID" id="userID" hidden>
+            <input name="TKNV" id="TKNV" hidden>
             <input name="statusChoice" id="statusChoice" hidden >
         </form>
 
@@ -87,16 +103,19 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
+                        <th scope="col">Account ID</th>
+                        <th scope="col">Staff ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Phone Number</th>
                         <th scope="col">Active / Lock</th>
+                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                 {{#each userList}}
                     <tr>
-                        <th scope="row">{{MANV}}</th>
+                        <th scope="row">{{ID}}</th>
+                        <td>{{MANV}}</td>
                         <td>{{HOTEN}}</td>
                         <td>{{SDT}}</td>
                         <td>
@@ -104,12 +123,22 @@
                                 <button type="button"
                                         class="btn {{#if TRANGTHAI}}btn-success{{/if}} activeBtn"
                                         data-id="{{MANV}}"
+                                        data-myval="{{ID}}"
                                         {{#if TRANGTHAI}}disabled{{/if}}>Active</button>
                                 <button type="button"
                                         class="btn {{#unless TRANGTHAI}}btn-danger{{/unless}} lockBtn"
                                         data-id="{{MANV}}"
+                                        data-myval="{{ID}}"
                                         {{#unless TRANGTHAI}}disabled{{/unless}}>Lock</button>
                             </div>
+                        </td>
+                        <td>
+                            <a  class="btn btn-danger deleteBtn"
+                                role="button"
+                                data-id="{{MANV}}"
+                                data-myval="{{ID}}">
+                                Delete
+                            </a>
                         </td>
                     </tr>
                 {{/each}}

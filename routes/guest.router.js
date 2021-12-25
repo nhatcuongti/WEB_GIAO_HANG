@@ -36,6 +36,7 @@ router.post('/', async function (req, res) {
     req.session.typeAccount = type;
     req.session.authUser = req.body.username;
     req.session.auth = true;
+    req.session.status = dataUser.status;
 
     if (type === 'client'){
 
@@ -58,9 +59,9 @@ router.post('/', async function (req, res) {
     }
     else if (type === 'admin')
         res.redirect('/admin')
-    else if (type === 'staff')
-        res.redirect('/staff')
-
+    else{
+        res.redirect('/staff');
+    }
 });
 
 router.get('/register', async function (req, res) {

@@ -83,6 +83,7 @@ router.get('/ManageUser/staff', async function (req, res) {
     res.locals.isManageUser = true;
 
     const userList = await accountModel.getAllStaff();
+    console.log(userList);
     res.render('admin/ManageUser_Staff', {
         layout: 'admin.hbs',
         userList
@@ -93,9 +94,17 @@ router.post('/ManageUser/staff', async function (req, res) {
     res.locals.isManageUser = true;
 
     const userID = req.body.userID;
-    const statusChoice = req.body.statusChoice;
-    console.log(userID);
-    await accountModel.updateAccountStatus('staff' , userID, statusChoice)
+    let statusChoice = req.body.statusChoice;
+    const TKNV = req.body.TKNV;
+
+    await accountModel.updateAccountStatus('staff', userID, statusChoice, TKNV);
+
+    // if (statusChoice === 'lock')
+    //     await accountModel.lockStaff(TKNV);
+    // else if (statusChoice === 'delete')
+    //     await accountModel.deleteStaff(TKNV);
+    // else
+    //     await accountModel.updateAccountStatus('staff' , userID, statusChoice, TKNV)
 
     res.redirect('/admin/ManageUser/staff');
 });
