@@ -58,6 +58,9 @@ router.post('/', async function (req, res) {
     }
     else if (type === 'admin')
         res.redirect('/admin')
+    else if (type === 'staff')
+        res.redirect('/staff')
+
 });
 
 router.get('/register', async function (req, res) {

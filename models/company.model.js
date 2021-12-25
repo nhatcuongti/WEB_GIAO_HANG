@@ -6,14 +6,18 @@ export default{
         query('SELECT * \n' +
             'FROM ChiNhanh CN JOIN KhuVucHoatDong KVHD ON CN.DiaChi = KVHD.MAKHUVUC');
     },
+    async getBranchByID(idCompany){
+        return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
+        query('SELECT * FROM ChiNhanh CN JOIN KhuVucHoatDong KVHD ON CN.DiaChi = KVHD.MAKHUVUC WHERE MADOANHNGHIEP = @idCompany');
+    },
     async getBranchNullConstract(idCompany){
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
         query('select cn.* from ChiNhanh cn where cn.MaDoanhNghiep = @idCompany and cn.MaHopDong is null');
     },
-    async insertBranch(branch){
+    async insertBranch(branch, idUser){
         try{
             return sql.connect.request().input('idBranch', sql.mssql.VarChar(5), branch.name).
-            input('idCompany', sql.mssql.VarChar, "dn01").
+            input('idCompany', sql.mssql.VarChar, idUser).
             input('addressBranch',sql.mssql.VarChar, branch.address).
             input('ds', sql.mssql.Money, 0).
             input('idContract', sql.mssql.VarChar, null).
@@ -38,7 +42,16 @@ export default{
             return sql.connect.request().input('idBranch', sql.mssql.VarChar(5), idBranch).
             input('idCompany', sql.mssql.VarChar, idCompany).
             input('addressBranch',sql.mssql.VarChar, address).
-            query('UPDATE ChiNhanh Set diachi=@addressBranch where MaChiNhanh = @idBranch and MaDoanhNghiep = @idCompany');
+            query('UPDATE ChiNhanh Set diachi=@addressBranch where MACHINHANH = @idBranch and MaDoanhNghiep = @idCompany');
+        }catch(e){
+            console.log(e)
+            return false;
+        }
+    },
+    async getActivityZone(){
+        try{
+            return sql.connect.request().
+            query('SELECT * FROM KHUVUCHOATDONG');
         }catch(e){
             console.log(e)
             return false;
@@ -144,7 +157,7 @@ export default{
                 sql.connect.request().input('idBranch', sql.mssql.VarChar(5), e).
                 input('idCompany', sql.mssql.VarChar, idCompany).
                 input('idContract',sql.mssql.VarChar, idContract).
-                query('UPDATE ChiNhanh Set MaHopDong=@idContract where MaChiNhanh = @idBranch and MaDoanhNghiep = @idCompany');
+                query('UPDATE ChiNhanh Set MaHopDong=@idContract where MACHINHANH = @idBranch and MaDoanhNghiep = @idCompany');
             })
         }catch(e){
             console.log(e)
@@ -158,7 +171,7 @@ export default{
         for(var i = 0; i < 100; i++){
             var check = 0;
             arr.forEach(function (e){
-                if(e.MaChiNhanh === (i.toString()))
+                if(e.MACHINHANH === (i.toString()))
                     check = 1;
             })
             if(check === 0)
@@ -185,5 +198,18 @@ export default{
             .input('idContract', sql.mssql.VarChar, idContract)
             .input('DangGiaHan', sql.mssql.BIT, false)
             .query('UPDATE HopDong Set DangGiaHan=@DangGiaHan where MaHD = @idContract');
+    },
+    async getOrderByID(idCompany){
+        return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
+        query('SELECT * FROM DonHang WHERE MADOANHNGHIEP = @idCompany');
+    },
+    async getOrderByOrderID(idCompany){
+        return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
+        query('SELECT * FROM DonHang dh join taixe tx on tx.matx = dh.matx  join khachhang kh on dh.makh = kh.makh WHERE dh.MaDH = @idCompany');
+    },
+    async getProductDetailByOrderID(idCompany) {
+        return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
+        query('SELECT * FROM DonHang dh join DonHang_SP dhsp on dh.madh = dhsp.madh  join SANPHAM sp on sp.masp = dhsp.masp WHERE dh.MaDH = @idCompany');
+
     }
 }

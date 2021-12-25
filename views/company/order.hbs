@@ -18,20 +18,31 @@
                         </tr>
                     </thead>
                     <tbody>
-<!--                        <tr>-->
-<!--                            <th scope="row">DH1</th>-->
-<!--                            <td>2/2/2020</td>-->
-<!--                            <td>Tiền mặt</td>-->
-<!--                            <td>20.000</td>-->
-<!--                            <td>50.000</td>-->
-<!--                            <td>Đã giao</td>-->
-<!--                            <td>-->
-<!--                                <a class="btn btn-lg p-0  " href="#" role="button">-->
-<!--                                    <i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>-->
-<!--                                </a>-->
-<!--                            </td>-->
+                    {{#each data}}
+                        <tr>
+                            <th scope="row">{{MaDH}}</th>
+                            <td>{{NgayDat}}</td>
+                            <td>{{PhiVanChuyen}}</td>
+                            <td>{{PhiSanPham}}</td>
+                            <td>{{TinhTrang}}</td>
+<!--                            {{#if TinhTrang}}-->
+<!--                                <td>Đang giao hàng</td>-->
+<!--                            {{else}}-->
+<!--                                {{#unless TinhTrang}}-->
+<!--                                    <td>Đang chuẩn bị</td>-->
+<!--                                {{else}}-->
+<!--                                    <td>Đã giao</td>-->
+<!--                                {{/unless}}-->
+<!--                            {{/if}}-->
 
-<!--                        </tr>-->
+                            <td>
+                                <a class="btn btn-lg p-0  " href="/company/order/detail?id={{MaDH}}" role="button">
+                                    <i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    {{/each}}
 
                     </tbody>
                 </table>

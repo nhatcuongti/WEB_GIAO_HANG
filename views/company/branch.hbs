@@ -29,8 +29,8 @@
                     <tbody>
                     {{#each this.data}}
                         <tr>
-                            <th scope="row">{{MaChiNhanh}}</th>
-                            <td>{{DiaChi}}</td>
+                            <th scope="row">{{MACHINHANH}}</th>
+                            <td>{{TENKHUVUC}}</td>
                             <td>{{DoanhSoBan}}</td>
                             {{#unless MAHOPDONG}}
                             <td>Trống</td>
@@ -38,10 +38,10 @@
                                 <td>MAHOPDONG</td>
                                 {{/unless}}
                             <td class="text-right">
-                                <a data-id="{{MaChiNhanh}}" class="btn btn-lg p-0 delBranch" href="#" role="button">
+                                <a data-id="{{MACHINHANH}}" class="btn btn-lg p-0 delBranch" href="#" role="button">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </a>
-                                <a class="btn btn-lg p-0  " href="/company/branch/update?id={{MaChiNhanh}}" role="button">
+                                <a class="btn btn-lg p-0  " href="/company/branch/update?id={{MACHINHANH}}" role="button">
                                     <i class="fa fa-wrench" aria-hidden="true"></i>
                                 </a>
                             </td>
