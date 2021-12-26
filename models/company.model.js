@@ -12,7 +12,7 @@ export default{
     },
     async getBranchNullConstract(idCompany){
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
-        query('select cn.* from ChiNhanh cn where cn.MaDoanhNghiep = @idCompany and cn.MaHopDong is null');
+        query('select * from ChiNhanh cn join KhuVucHoatDong kv on kv.MAKHUVUC = cn.DiaChi where cn.MaDoanhNghiep = @idCompany and cn.MaHopDong is null');
     },
     async insertBranch(branch, idUser){
         try{
@@ -22,6 +22,17 @@ export default{
             input('ds', sql.mssql.Money, 0).
             input('idContract', sql.mssql.VarChar, null).
             query('EXEC INSERT_CHINHANH @idBranch, @idCompany, @addressBranch, @ds, @idContract');
+        }catch(e){
+            console.log(e)
+            return false;
+        }
+    },
+    async insertNewBranchToContract(idBranch, idUser, idContract){
+        try{
+            return sql.connect.request().input('idBranch', sql.mssql.VarChar(5), idBranch).
+            input('idCompany', sql.mssql.VarChar, idUser).
+            input('idContract', sql.mssql.VarChar, idContract).
+            query('EXEC insertNewBranchToContract @idBranch, @idCompany, @idContract');
         }catch(e){
             console.log(e)
             return false;

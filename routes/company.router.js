@@ -105,13 +105,22 @@ router.get('/contract/add' ,async function (req, res) {
 });
 router.get('/contract/update' ,async function (req, res) {
     const idUser = req.session.authIDUser;
+    const idContract = req.query.id;
     const br =    await companyModel.getBranchNullConstract(idUser)
-    console.log(idUser)
-    res.render('company/addContract',{
+    console.log(br)
+    res.render('company/updateContract',{
         data: br.recordset,
-        idUser: idUser
+        idUser: idUser,
+        idContract: idContract
     });
 });
+router.post('/contract/update' ,async function (req, res) {
+    const idUser = req.session.authIDUser;
+    await companyModel.insertNewBranchToContract(req.body.selection, idUser, req.body.maHD)
+    res.redirect('/company/contract')
+});
+
+
 router.post('/contract/add' ,async function (req, res) {
     const idUser = req.session.authIDUser;
     var temp = await companyModel.getAllContractID(idUser)
@@ -124,7 +133,8 @@ router.post('/contract/add' ,async function (req, res) {
     const check = await companyModel.insertContract(id,idUser,req.body.daidien,count
         ,req.body.date,req.body.time)
     console.log(check)
-    if(check.recordset[0].check)
+    console.log()
+    if(Object.keys(check.recordsets).length === 0)
         await companyModel.updateBranch_Contract(req.body.selection,idUser,id)
     res.redirect('/company/contract')
 });
