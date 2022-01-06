@@ -227,8 +227,16 @@ export default{
             .query('UPDATE HopDong Set DangGiaHan=@DangGiaHan where MaHD = @idContract');
     },
     async getOrderByID(idCompany){
-        return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
-        query('SELECT * FROM DonHang WHERE MADOANHNGHIEP = @idCompany');
+        const mangoQuery = {
+            selector: {
+                "_id" : {
+                    $eq : idCompany
+                }
+            }
+        };
+        const parameters = {};
+
+        return couch.mango(dbName, mangoQuery, parameters)
     },
     async getOrderByOrderID(idCompany){
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
@@ -240,16 +248,15 @@ export default{
 
     },
     getProductByComID(idCompany) {
-        const viewUrl = "_design/store/_view/view-product-store";
-
-        const key = idCompany;
-        const queryOptions = {
-            key
+        const mangoQuery = {
+            selector: {
+                "_id": {
+                    "$eq": idCompany
+                }
+            }
         };
 
-        return couch.get(dbName, viewUrl, queryOptions);
-        // return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
-        // query('SELECT sp.* FROM SANPHAM sp join CHINHANH_SP cnsp on sp.masp = cnsp.masp WHERE cnsp.madoanhnghiep = @idCompany');
-
+        const parameters = {};
+        return couch.mango(dbName, mangoQuery, parameters);
     }
 }

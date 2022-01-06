@@ -9,8 +9,16 @@ export default{
         return sql.connect.request().query('select * from KHACHHANG');
     },
     getCompany(){
-        const viewUrl = "_design/store/_view/view-store";
-        return couch.get(dbName, viewUrl);
+        const mangoQuery = {
+            selector: {
+                "type": {
+                    "$eq": "store"
+                }
+            }
+        };
+
+        const parameters = {};
+        return couch.mango(dbName, mangoQuery, parameters);
     },
     async getProductOfCompany(idCompany, idBranch){
         return sql.connect.request()

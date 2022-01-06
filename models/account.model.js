@@ -13,15 +13,29 @@ export default{
         const viewURL = "_design/all/_view/account";
         return couch.get(dbName, viewURL);
     },
-    async checkAccount(username, password){
-        const viewURL = "_design/all/_view/view-with-id-password";
-        const key = [username, password];
-        const queryOptions = {
-            key
+    checkAccount(username, password){
+        // const viewURL = "_design/all/_view/view-with-id-password";
+        // const key = [username, password];
+        // const queryOptions = {
+        //     key
+        // };
+        //
+        // return couch.get(dbName, viewURL, queryOptions);
+        console.log(username);
+        console.log(password);
+        const mangoQuery = {
+            selector: {
+                "Username": {
+                    $eq: username
+                },
+                "Password": {
+                    $eq: password
+                }
+            }
         };
+        const parameters = {};
 
-        return couch.get(dbName, viewURL, queryOptions);
-
+        return couch.mango(dbName, mangoQuery, parameters)
     },
     //Dùng để chạy demo
     async staffLogin(id, mk) {

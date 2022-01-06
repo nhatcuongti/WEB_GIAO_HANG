@@ -70,8 +70,9 @@ router.post('/branch/update' ,async function (req, res) {
 router.get('/order' ,async function (req, res) {
     const idUser = req.session.authIDUser;
     const list = await companyModel.getOrderByID(idUser)
+    console.log(list.data.docs[0].orders);
     res.render('company/order',{
-        data: list.recordset
+        data: list.data.docs[0].orders
     });
 });
 router.get('/order/detail' ,async function (req, res) {

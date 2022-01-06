@@ -14,12 +14,12 @@ router.get('/' , function (req, res) {
     clientModel.getCompany().then(
         function (data, headers, status){
             const companyList = [];
-            const rawData = data.data.rows;
+            const rawData = data.data.docs;
             for (const data of rawData){
                 companyList.push({
-                    "id" : data.id,
-                    "Name" : data.value.Name,
-                    "typeProduct" : data.value.typeProduct
+                    "id" : data['_id'],
+                    "Name" : data.name,
+                    "typeProduct" : data.typeProduct
                 });
             }
 
@@ -37,10 +37,10 @@ router.get('/' , function (req, res) {
 
 router.get('/product/:id' , function (req, res) {
     const idCompany = req.params.id;
+    req.session.order_idCompany = idCompany;
     companyModel.getProductByComID(idCompany).then(
         function (data, headers, status){
-            const products = data.data.rows[0].value;
-
+            const products = data.data.docs[0].products;
 
             res.render('client/client_product', {
                 layout: 'client.hbs',
@@ -117,7 +117,7 @@ router.get('/list' ,async function (req, res) {
 });
 
 router.post('/list', async (req, res) => {
-    await orderModel.insertOrder(req.body, req.session.cart);
+    await orderModel.insertOrder(req.session.order_idCompany, req.session.authIDUser, req.session.cart);
     req.session.cart = [];
     res.redirect('/client');
 })

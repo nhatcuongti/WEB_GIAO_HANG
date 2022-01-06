@@ -16,8 +16,7 @@ router.post('/', async function (req, res) {
     const account = req.body;
     accountModel.checkAccount(account.username, account.password).then(
         function (data, headers, status){
-            console.log(data.data.rows);
-            if (data.data.rows.length === 0){
+            if (data.data.docs.length === 0){
                 console.log("Wrong account");
                 var err_message = "Your ID or Password is not valid !!"
                 return res.render('guest/login', {
@@ -26,25 +25,24 @@ router.post('/', async function (req, res) {
                 });
             }
 
-            const userData = data.data.rows[0];
-
+            const userData = data.data.docs[0];
             console.log(userData);
 
-            req.session.typeAccount = userData.value;
-            req.session.authUser = req.body.username;
+            req.session.typeAccount = userData.type;
+            req.session.authUser = req.body.Username;
             req.session.auth = true;
             req.session.status = true;
 
-            if (userData.value === 'client'){
-                req.session.authIDUser = userData.id;
+            if (userData.type === 'client'){
+                req.session.authIDUser = userData['_id'];
                 res.redirect('/client')
             }
-            else if (userData.value === 'store'){
-                req.session.authIDUser = userData.id;
+            else if (userData.type === 'store'){
+                req.session.authIDUser = userData['_id'];
                 res.redirect('/company/product');
             }
             else {
-                req.session.authIDUser = userData.id;
+                req.session.authIDUser = userData['_id'];
                 req.session.activePlace = "Binh Phuoc"
                 res.redirect('/driver');
             }

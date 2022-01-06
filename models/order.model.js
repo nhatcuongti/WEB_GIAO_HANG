@@ -1,61 +1,74 @@
 import sql from "../utils/mssql.js";
-import knexObj from '../utils/knex.js'
-import {raw} from "express";
-import {Login7TokenHandler} from "tedious/lib/token/handler.js";
-import formatData from "../utils/formatData.js";
+import couch from "../utils/couchDB.js";
+
+const dbName = 'delivery';
 
 export default{
-    async insertOrder(body, cart){
-        //Insert don hang
-        try{
-            const orderData = {};
-            const rawOrderData = await  sql.connect.request()
-                .input('MaDH', sql.mssql.VarChar, orderData.MaDH)
-                .query('SELECT * FROM DonHang');
-
-            const orderList = rawOrderData.recordset;
-            // orderData.MaDH = formatData.increaseOrderID(orderList);
-            orderData.MaDH = formatData.increaseOrderID(orderList);
-            orderData.phiVanChuyen = body.shipPrice;
-            orderData.TinhTrang = 0;
-            orderData.HinhThucThanhToan = body.typePurchase;
-            orderData.PhiSanPham = body.totalPrice;
-            orderData.DiaChiGiao = body.address;
-            orderData.MaChiNhanh = cart[0].idBranch;
-            orderData.MaDoanhNghiep = cart[0].idCompany;
-            orderData.MaKH = body.idUser;
-            const rawData = await  sql.connect.request()
-                .input('MaDH', sql.mssql.VarChar, orderData.MaDH)
-                .input('PhiVanChuyen', sql.mssql.SmallMoney, orderData.phiVanChuyen)
-                .input('TinhTrang', sql.mssql.Int, orderData.TinhTrang)
-                .input('HinhThucThanhToan', sql.mssql.Int, orderData.HinhThucThanhToan)
-                .input('PhiSanPham', sql.mssql.SmallMoney, orderData.PhiSanPham)
-                .input('DiaChiGiao', sql.mssql.NVarChar,  orderData.DiaChiGiao)
-                .input('MaChiNhanh', sql.mssql.VarChar, orderData.MaChiNhanh)
-                .input('MaDoanhNghiep', sql.mssql.VarChar, orderData.MaDoanhNghiep)
-                .input('MaKhachHang', sql.mssql.VarChar, orderData.MaKH)
-                .query('EXEC insertDonHang @MaDH, @PhiVanChuyen, @TinhTrang, @HinhThucThanhToan, @PhiSanPham, @DiaChiGiao, @MaChiNhanh, @MaDoanhNghiep, @MaKhachHang');
-            console.log('insert order');
-            console.log(rawData);
-            //Insert don hang san pham
-            for (const product of cart){
-                //insert DONHANG_SANPHAM
-                const dhspData = {};
-                dhspData.MASP = product.idProduct;
-                dhspData.MADH = orderData.MaDH;
-                dhspData.SLSP = product.numberProduct;
-                await sql.connect.request()
-                    .input('MASP', sql.mssql.VarChar, dhspData.MASP)
-                    .input('MADH', sql.mssql.VarChar, dhspData.MADH)
-                    .input('SLSP', sql.mssql.Int, dhspData.SLSP)
-                    .query('INSERT INTO DONHANG_SP VALUES(@MASP, @MADH, @SLSP)');
+    async insertOrder(orderID, clientID, cart){
+        console.log(orderID);
+        console.log(cart);
+        //Get store
+        const mangoQuery = {
+            selector: {
+                "_id":orderID
             }
-        }catch(e){
-            console.log(e);
-        }
+        };
+        const parameters = {};
+
+        couch.mango(dbName, mangoQuery, parameters).then(
+            function (data, headers, status){
+                couch.uniqid().then(function(ids){
+                    const storeData = data.data.docs[0];
+                    const id = ids[0];
+
+                    const orders = storeData.orders;
+                    const productOnOrder = [];
+
+                    couch.uniqid().then(function(ids){
+                        for (const product of cart){
+                            productOnOrder.push({
+                                "_id" : product.idProduct,
+                                "quantity" : product.numberProduct
+                            })
+                        }
+
+                        orders.push({
+                            "_id" : ids[0],
+                            "products": productOnOrder,
+                            "transportPrice": 20000,
+                            "client" : clientID,
+                            "driver" : null
+                        })
+
+                        couch.update(dbName, {
+                            "_id" : storeData['_id'],
+                            "_rev" : storeData._rev,
+                            "type": "store",
+                            "name": storeData.name,
+                            "Username": storeData.Username,
+                            "Password": storeData.Password,
+                            "typeProduct": storeData.typeProduct,
+                            "products" : storeData.products,
+                            "orders": orders
+                        }).then(
+                            function (data, headers, status){
+                                console.log("Successfully !!");
+                            },
+                            function (err){
+                                console.log(err);
+                            }
+                        )
+                    })
+                })
+            },
+            function (err){
+                console.log(err);
+            }
+        )
 
 
-        return null;
+
+
     },
     async getAllOrderFormat(idUser){
         console.log(idUser);

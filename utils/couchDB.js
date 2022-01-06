@@ -3,7 +3,7 @@ import NodeCouchDB from 'node-couchdb';
 const couch = new NodeCouchDB({
     auth : {
         user : 'admin',
-        pass : '123456'
+        pass : '0909845284'
     }
 });
 
