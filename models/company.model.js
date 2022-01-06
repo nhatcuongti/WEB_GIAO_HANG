@@ -1,4 +1,8 @@
 import sql from "../utils/mssql.js";
+import couch from "../utils/couchDB.js";
+
+const dbName = "delivery";
+
 
 export default{
     async getBranch(idCompany){
@@ -235,9 +239,17 @@ export default{
         query('SELECT * FROM DonHang dh join DonHang_SP dhsp on dh.madh = dhsp.madh  join SANPHAM sp on sp.masp = dhsp.masp WHERE dh.MaDH = @idCompany');
 
     },
-    async getProductByComID(idCompany) {
-        return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
-        query('SELECT sp.* FROM SANPHAM sp join CHINHANH_SP cnsp on sp.masp = cnsp.masp WHERE cnsp.madoanhnghiep = @idCompany');
+    getProductByComID(idCompany) {
+        const viewUrl = "_design/store/_view/view-product-store";
+
+        const key = idCompany;
+        const queryOptions = {
+            key
+        };
+
+        return couch.get(dbName, viewUrl, queryOptions);
+        // return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
+        // query('SELECT sp.* FROM SANPHAM sp join CHINHANH_SP cnsp on sp.masp = cnsp.masp WHERE cnsp.madoanhnghiep = @idCompany');
 
     }
 }

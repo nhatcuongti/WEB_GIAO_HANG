@@ -2,6 +2,9 @@ import sql from "../utils/mssql.js";
 import knexObj from '../utils/knex.js'
 import accountModel from "./account.model.js";
 import formatData from "../utils/formatData.js";
+import couch from "../utils/couchDB.js";
+
+const dbName = 'delivery';
 
 export default{
     async getNameProductWithID(idProduct){
@@ -31,16 +34,13 @@ export default{
         //         price : 20000000
         //     }
         // ]
-        const rawData = await sql.connect.request()
-            .input('idProduct', sql.mssql.VarChar, idProduct)
-            .query('SELECT MASP AS idProduct, TENSP AS name, GIA AS price FROM SANPHAM WHERE MASP = @idProduct');
-        const products = rawData.recordset;
+        const viewURL = '_design/store/_view/view-product-id-store';
+        const key = idProduct;
+        const queryOptions = {
+            key
+        };
 
-        for (const product of products){
-            if (product.idProduct === idProduct)
-                return product;
-        }
-        return null;
+        return couch.get(dbName, viewURL, queryOptions);
     },
     async insertTypeProduct(typeProduct) {
         const rawData = await accountModel.getTypeProduct();

@@ -1,13 +1,16 @@
 import sql from "../utils/mssql.js";
+import couch from '../utils/couchDB.js';
 import knexObj from '../utils/knex.js'
+
+const dbName = "delivery";
 
 export default{
     async getAll(){
         return sql.connect.request().query('select * from KHACHHANG');
     },
-    async getCompany(){
-        return sql.connect.request().query('SELECT MASOTHUE AS id, TenDoanhNghiep AS Name, TENLOAIHANG AS typeProduct\n' +
-            'FROM DoanhNghiep JOIN LOAIHANG ON LOAIHANG = MALOAIHANG')
+    getCompany(){
+        const viewUrl = "_design/store/_view/view-store";
+        return couch.get(dbName, viewUrl);
     },
     async getProductOfCompany(idCompany, idBranch){
         return sql.connect.request()

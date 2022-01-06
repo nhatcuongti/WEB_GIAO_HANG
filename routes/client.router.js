@@ -4,40 +4,59 @@ import accountModel from "../models/account.model.js";
 import productModel from "../models/product.model.js";
 import orderModel from "../models/order.model.js";
 import companyModel from "../models/company.model.js";
-import {Login7TokenHandler} from "tedious/lib/token/handler.js";
+import couch from "../utils/couchDB.js";
+
+const dbName = "delivery";
 const router = express.Router();
 
 
-router.get('/' ,async function (req, res) {
-    const rawData = await clientModel.getCompany();
-    const companyList = rawData.recordset;
-    res.render('client/client_home', {
-        layout:'client.hbs',
-        companyList
-    });
+router.get('/' , function (req, res) {
+    clientModel.getCompany().then(
+        function (data, headers, status){
+            const companyList = [];
+            const rawData = data.data.rows;
+            for (const data of rawData){
+                companyList.push({
+                    "id" : data.id,
+                    "Name" : data.value.Name,
+                    "typeProduct" : data.value.typeProduct
+                });
+            }
+
+            res.render('client/client_home', {
+                layout:'client.hbs',
+                companyList
+            });
+        },
+        function (err){
+            res.send("Something wrong happen, Refresh again");
+        }
+    )
+    // res.send("TAO LAO");
 });
 
-router.get('/branch/:id' ,async function (req, res) {
+router.get('/product/:id' , function (req, res) {
     const idCompany = req.params.id;
-    const rawData = await companyModel.getBranch(idCompany);
-    const branchList = rawData.recordset;
-    res.render('client/client_home_branch', {
-        layout:'client.hbs',
-        branchList
-    });
-});
+    companyModel.getProductByComID(idCompany).then(
+        function (data, headers, status){
+            const products = data.data.rows[0].value;
 
-router.get('/product/:idCompany/:idBranch' ,async function (req, res) {
-    const idCompany = req.params.idCompany;
-    const idBranch = req.params.idBranch;
-    const rawData = await clientModel.getProductOfCompany(idCompany, idBranch);
-    const products = rawData.recordset;
-    res.render('client/client_product', {
-        layout: 'client.hbs',
-        products,
-        idCompany,
-        idBranch
-    });
+
+            res.render('client/client_product', {
+                layout: 'client.hbs',
+                products,
+                idCompany
+            });
+        },
+        function (err){
+            console.log(err);
+        }
+    )
+
+    // res.render('client/client_home_branch', {
+    //     layout:'client.hbs',
+    //     branchList
+    // });
 });
 
 router.post('/product' ,async function (req, res) {
@@ -67,7 +86,6 @@ router.post('/product' ,async function (req, res) {
 router.get('/list' ,async function (req, res) {
     //Get account with ID
     const idAccount = req.session.authIDUser;
-    const myAccount = await accountModel.getAccountClientWithID(idAccount);
     //get product
     const cart = req.session.cart;
     if (cart.length === 0){
@@ -79,9 +97,12 @@ router.get('/list' ,async function (req, res) {
     let totalPriceProduct = 0;
 
     for (const product of cart){
-        const findProduct = await productModel.getNameProductWithID(product.idProduct);
-        product.price = findProduct.price;
-        product.name = findProduct.name;
+        const rawData = await productModel.getNameProductWithID(product.idProduct);
+        const findProduct = rawData.data.rows[0];
+        console.log(findProduct);
+
+        product.price = findProduct.value.price;
+        product.name = findProduct.value.name;
 
         totalPriceProduct += product.price * product.numberProduct;
     }
@@ -91,7 +112,6 @@ router.get('/list' ,async function (req, res) {
     res.render('client/client_list', {
         layout: 'client.hbs',
         cart,
-        myAccount,
         totalPriceProduct
     });
 });
