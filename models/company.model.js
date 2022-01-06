@@ -1,4 +1,5 @@
 import sql from "../utils/mssql.js";
+import couch from "../utils/couchdb.utils.js";
 
 export default{
     async getBranch(idCompany){
@@ -238,6 +239,38 @@ export default{
     async getProductByComID(idCompany) {
         return sql.connect.request().input('idCompany', sql.mssql.VarChar, idCompany).
         query('SELECT sp.* FROM SANPHAM sp join CHINHANH_SP cnsp on sp.masp = cnsp.masp WHERE cnsp.madoanhnghiep = @idCompany');
+
+    },
+    async getSellerInforByCouchdb(id){
+        const dbName = "seller";
+        const mangoQuery = {
+            "selector": {
+                "_id": {
+                    "$eq": id // var id_seller
+                }
+            }
+        }
+        const parameters = {};
+        // const viewUrl = "_design/product/_view/product-view?include_docs=true";
+        const seller = await couch.mango(dbName, mangoQuery, parameters).then(async function (data, headers, status) {
+            return await data.data.docs[0]
+        }, function(err) {
+            console.log(err)
+        });
+        // console.log(seller)
+        return seller;
+
+    },
+    async getAllSellerInforByCouchdb(id){
+        const dbName = "seller";
+        const viewUrl = "_design/product/_view/product-view?include_docs=true";
+        const seller = await couch.get(dbName, viewUrl).then(async function (data, headers, status) {
+            return await data.data.rows
+        }, function(err) {
+            console.log(err)
+        });
+        // console.log(seller)
+        return seller;
 
     }
 }

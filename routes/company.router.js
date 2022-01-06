@@ -1,19 +1,56 @@
 import express from 'express';
 const router = express.Router();
 import companyModel from "../models/company.model.js";
+import couch from "../utils/couchdb.utils.js";
 
 router.get('/product' ,async function (req, res) {
-    const idUser = req.session.authIDUser;
-    var temp = await companyModel.getProductByComID(idUser)
+    // const idUser = req.session.authIDUser;
+    // var temp = await companyModel.getProductByComID(idUser)
+    // res.render('company/product',{
+    //     data: temp.recordset
+    // });
+
+    const id = "0a466bddb4591c495d1c7ad28f000c15"
+    const seller = await companyModel.getSellerInforByCouchdb(id)
     res.render('company/product',{
-        data: temp.recordset
+        data: seller.products
     });
+
 });
 router.get('/product/add' ,async function (req, res) {
-
     res.render('company/addProduct');
 });
 
+router.post('/product/add' ,async function (req, res) {
+    const id = "0a466bddb4591c495d1c7ad28f000c15"
+    const seller = await companyModel.getSellerInforByCouchdb(id)
+    const rev = seller._rev
+    let arrProduct = seller.products
+    console.log(seller._rev)
+    let objProduct = {
+        "id": req.body.id,
+        "name": req.body.name,
+        "price": req.body.price
+    }
+    arrProduct.push(objProduct)
+    console.log(arrProduct)
+    couch.update("seller", {
+        _id: id,
+        _rev: rev,
+        type: seller.type,
+        name: seller.name,
+        products: arrProduct,
+        // order: seller.order
+    }).then(({data, headers, status}) => {
+        // data is json response
+        // headers is an object with all response headers
+        // status is statusCode number
+    }, err => {
+        console.log(err)
+    });
+
+    res.redirect('/company/product');
+});
 
 router.get('/branch' ,async function (req, res) {
     const id = req.session.authIDUser;
